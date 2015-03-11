@@ -23,5 +23,5 @@ This will create a new branch with whatever you named it. Use the command "git p
 
 When you are done working on a branch, and have commited any and all changes to files to your branch, you will execute the command "git push origin nameofyourbranchhere". This will commit your changes to your branch which will be reflected on github. Once you have deemed it bug free (or at least mostly bug free :D) you may then merge your branch into the master via the interface on github.com. 
 
-**IMPORTANT** 
+**IMPORTANT:** 
 It is important to make sure that when you create a branch, you are on the master branch. Branching from another branch can make things difficult. To determine what branch you are on, and to make sure you aren't about to branch improperly, use the command "git status". This will tell you what branch you are currently on. To exit back to the master branch, or to visit an already existing branch simply use the command "git checkout nameofthebranchyouwanttovisithere". 
