@@ -13,7 +13,7 @@ This is a list of things to install to allow this to work:
 
 Download all of these things and install them and you should be good to go!
 
-#Starting up Server:
+#Starting Up The Server:
 This will be updated one the Database functionallity is added. To start up your server currently, in the terminal, type the command "python server.py". This will fire up the server. To view the application, navigate to 127.0.0.1:2500 in the web browser of your choice. Whatever is has been built and is functional will be present for you to enjoy. Again, this will be updated once Sql comes into play
 
 #Working On Features/Functions:
