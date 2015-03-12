@@ -14,9 +14,9 @@ CREATE TABLE IF NOT EXISTS users
 	email varchar(50) NOT NULL,
 	password varchar(1000) NOT NULL,
 	accountStatus int(5) NOT NULL,
-	subjects varchar(400),
+	classes varchar(400),
 );
-CREATE INDEX subject_type ON users (subjects);
+CREATE INDEX subject_type ON users (classes);
 
 CREATE TABLE IF NOT EXISTS appointments
 (
@@ -24,9 +24,18 @@ CREATE TABLE IF NOT EXISTS appointments
 	primary key (numId),
 	datenum DATE(20) NOT NULL,
 	appointmenttime TIME(30) NOT NULL,
-	subject varchar(200) NOT NULL,
+	class varchar(15) NOT NULL,
 	studentId int(100) NOT NULL,
 	tutorId int(100) NOT NULL
 );
 CREATE INDEX tutor_id ON appointments (tutorId);
+
+CREATE TABLE IF NOT EXISTS classes
+(
+	numId INT not null auto_increment,
+	primary key (numId),
+	class varchar(15),
+	subject varchar(15),
+);
+CREATE INDEX subject_name ON classes (subject);
 
