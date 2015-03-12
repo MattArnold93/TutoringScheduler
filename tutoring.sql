@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS appointments
 	numId INT not null auto_increment,
 	primary key (numId),
 	datenum DATE(20) NOT NULL,
-	time TIME(30) NOT NULL,
+	appointmenttime TIME(30) NOT NULL,
 	subject varchar(200) NOT NULL,
 	studentId int(100) NOT NULL,
 	tutorId int(100) NOT NULL
