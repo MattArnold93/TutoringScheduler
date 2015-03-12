@@ -1,4 +1,6 @@
-from flask import Flask, render_template 
+from flask import Flask, render_template, request, redirect, url_for
+from collections import defaultdict
+import utils, MySQLdb
 app = Flask(__name__)
 
 @app.route('/')
@@ -27,4 +29,5 @@ def Schedule():
 
 
 if __name__ == '__main__':
-	app.run(port=2500)
+	app.debug=True
+	app.run(host='0.0.0.0', port=6782)
