@@ -9,7 +9,7 @@ This is a list of things to install to allow this to work:
 
 **2. Flask**
 
-**3. MySql**
+**3. MySql and MySQLdb** - MySQLdb is a library that you will need to download. It is easiest to use "pip" to install. If you dont have pip installed, install that as well. 
 
 Download all of these things and install them and you should be good to go!
 
