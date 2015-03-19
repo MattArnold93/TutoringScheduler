@@ -1,19 +1,49 @@
-from flask import Flask, render_template, request, redirect, url_for
-from collections import defaultdict
-import utils, MySQLdb
+from flask import Flask, render_template, request, redirect, url_for, session
+import MySQLdb, utils, os
+
 app = Flask(__name__)
+app.secret_key = os.urandom(24).encode('hex')
 
-@app.route('/')
+@app.route('/index')
 def index():
-	return render_template('index.html')
+  print "hi"
+  return render_template('index.html')
 
-@app.route('/login')
+@app.route('/', methods=['GET', 'POST'])
 def login():
-	return "Login"
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  if request.method == 'POST':
+    print "yay"
+    email = request.form['email']
+    password = request.form['password']
+    query = "SELECT * FROM users WHERE email = '%s' AND password = '%s'" % (email, password) 
+    cur.execute(query)
+    db.commit()
+    print "committed"
+      
+    if cur.fetchone():
+      session['logged_in'] = email
+      print "redirect"
+      return redirect(url_for('index'))
+  return render_template('login.html')
 
-@app.route('/register')
+@app.route('/register', methods=['GET','POST'])
 def register():
-	return "Register"
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  if request.method == 'POST':
+    firstname=request.form['firstname']
+    lastname=request.form['lastname']
+    email=request.form['email']
+    password=request.form['password']
+    print firstname + " " + lastname + " " + email + " " + password
+    query = "INSERT INTO users (firstname,lastname,email,password,accountStatus) VALUES('%s','%s','%s','%s',1);" % (firstname,lastname,email,password)
+    print query
+    cur.execute(query)
+    db.commit()
+    return redirect(url_for('login'))
+  return render_template('register.html')
 
 @app.route('/AdminDash')
 def AdminDash():
@@ -27,7 +57,5 @@ def TutorDash():
 def Schedule():
 	return "Schedule"
 
-
 if __name__ == '__main__':
-	app.debug=True
-	app.run(host='0.0.0.0', port=6782)
+ app.run(host='0.0.0.0', port=3000)
