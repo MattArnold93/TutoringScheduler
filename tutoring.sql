@@ -38,5 +38,3 @@ CREATE TABLE IF NOT EXISTS classes
 	subject varchar(15),
   INDEX (subject)
 );
-
-INSERT INTO users (firstname,lastname,email,password,accountStatus,classes) VALUES('Juliana','Kim','jkim24@mail.umw.edu','z0r40fw4t3r',2,'');
