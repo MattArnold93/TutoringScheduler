@@ -9,24 +9,31 @@ def index():
   print "hi"
   return render_template('index.html')
 
+@app.route('/createTutor')
+def createTutor():
+  return render_template('createTutor.html')
+
 @app.route('/', methods=['GET', 'POST'])
 def login():
-    db = utils.db_connect()
-    cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-    if request.method == 'POST':
-      print "yay"
-      email = request.form['email']
-      password = request.form['password']
-      query = "SELECT * FROM users WHERE email = '%s' AND password = '%s'" % (email, password) 
-      cur.execute(query)
-      print query
-      db.commit()
-      print "committed"
-
-      if cur.fetchone():
-        session['logged_in'] = email
-        print "redirect"
-        return redirect(url_for('index'))
+    try:
+      db = utils.db_connect()
+      cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+      if request.method == 'POST':
+        print "yay"
+        email = request.form['email']
+        password = request.form['password']
+        query = "SELECT * FROM users WHERE email = '%s' AND password = '%s'" % (email, password) 
+        cur.execute(query)
+        print query
+        db.commit()
+        print "committed"
+  
+        if cur.fetchone():
+          session['logged_in'] = email
+          print "redirect"
+          return redirect(url_for('index'))
+    except:
+      print("error connecting to database")
     return render_template('login.html')
 
 @app.route('/register', methods=['GET','POST'])
@@ -55,7 +62,7 @@ def AdminDash():
   cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
   
   stuff = []
-  query = "SELECT * FROM users"
+  query = "SELECT * FROM users WHERE level LIKE 'ADMIN'"
   cur.execute(query)
   
   results = cur.fetchall()
@@ -79,7 +86,7 @@ def search():
 
 @app.route('/search2')
 def search2():
-  if (searchByName != False):
+  if (searchbyname != False):
     stuff = {'firstname': request.form['firstname'],
           'lastname': request.form['lastname']}
   
@@ -110,4 +117,4 @@ def search2():
   
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=8080)
+  app.run(host='0.0.0.0', port=8080, debug=True)
