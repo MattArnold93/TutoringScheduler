@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block content %}
+        <h1>Find a Tutor</h1>
+<form method = "GET" action = "/report2">
+					<table>
+						
+					<tr><td>First Name</td><td><input type="text" id="firstname" name="firstname" /></td></tr>
+					<tr><td>Last Name</td><td><input type="text" id="lastname" name="lastname" /></td></tr>
+					
+					
+					
+					<tr><td>Major of Study</td>
+					<select name="Subject">
+					<option>ACCT</option>
+					<option>AMST</option>
+					<option>ANTH</option>
+					<option>ARAB</option>
+					<option>ARTH</option>
+					<option>BIOL</option>
+					<option>BLAW</option>
+					<option>BUAD</option>
+					<option>CHEM</option>
+					<option>CHIN</option>
+					<option>CLAS</option>
+					<option>COMM</option>
+					<option>CPSC</option>
+					<option>DSCI</option>
+					<option>ECON</option>
+					<option>EDUC</option>
+					<option>ENGL</option>
+					<option>EESC</option>
+					<option>FREN</option>
+					<option>GEOG</option>
+					<option>GISC</option>
+					<option>GEOL</option>
+					<option>GERM</option>
+					<option>GREK</option>
+					<option>HISP</option>
+					<option>HIST</option>
+					<option>ITAL</option>
+					<option>LATN</option>
+					<option>LRSP</option>
+					<option>LING</option>
+					<option>MATH</option>
+					<option>MGMT</option>
+					<option>MIST</option>
+					<option>MKTG</option>
+					<option>MSCI</option>
+					<option>MUHL</option>
+					<option>MUPR</option>
+					<option>MUTC</option>
+					<option>MUTH</option>
+					<option>NURS</option>
+					<option>PHIL</option>
+					<option>PHYS</option>
+					<option>PSCI</option>
+					<option>PSYC</option>
+					<option>RELG</option>
+					<option>SOCG</option>
+					<option>SPAN</option>
+					<option>ARTS</option>
+					<option>THEA</option>
+					</select></td></tr>
+					
+					<tr><td>Course Number</td><td><input type="text" name="CourseNum" id="CourseNum"/></td></tr>
+
+					<tr><td>&nbsp;</td><td><input type="submit" value="Report Abduction" /></td></tr>
+					</table>
+					
+					</form>
+{% endblock %}

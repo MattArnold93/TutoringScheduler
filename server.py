@@ -11,43 +11,59 @@ def index():
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
-  # db = utils.db_connect()
-  # cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-  # # if request.method == 'POST':
-  #   print "yay"
-  #   email = request.form['email']
-  #   password = request.form['password']
-  #   query = "SELECT * FROM users WHERE email = '%s' AND password = '%s'" % (email, password) 
-  #   cur.execute(query)
-  #   db.commit()
-  #   print "committed"
-      
-  #   if cur.fetchone():
-  #     session['logged_in'] = email
-  #     print "redirect"
-  #     return redirect(url_for('index'))
-  return render_template('login.html')
+    db = utils.db_connect()
+    cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+    if request.method == 'POST':
+      print "yay"
+      email = request.form['email']
+      password = request.form['password']
+      query = "SELECT * FROM users WHERE email = '%s' AND password = '%s'" % (email, password) 
+      cur.execute(query)
+      print query
+      db.commit()
+      print "committed"
+
+      if cur.fetchone():
+        session['logged_in'] = email
+        print "redirect"
+        return redirect(url_for('index'))
+    return render_template('login.html')
 
 @app.route('/register', methods=['GET','POST'])
 def register():
-  # db = utils.db_connect()
-  # cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-  # if request.method == 'POST':
-  #   firstname=request.form['firstname']
-  #   lastname=request.form['lastname']
-  #   email=request.form['email']
-  #   password=request.form['password']
-  #   print firstname + " " + lastname + " " + email + " " + password
-  #   query = "INSERT INTO users (firstname,lastname,email,password,accountStatus) VALUES('%s','%s','%s','%s',1);" % (firstname,lastname,email,password)
-  #   print query
-  #   cur.execute(query)
-  #   db.commit()
-  #   return redirect(url_for('login'))
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  if request.method == 'POST':
+    firstname=request.form['firstname']
+    lastname=request.form['lastname']
+    email=request.form['email']
+    password=request.form['password']
+    print firstname + " " + lastname + " " + email + " " + password
+    if "umw.edu" in email:
+      query = "INSERT INTO users (firstname,lastname,email,password,accountStatus) VALUES('%s','%s','%s','%s',1);" % (firstname,lastname,email,password)
+      print query
+      cur.execute(query)
+      db.commit()
+      return redirect(url_for('login'))
+    else:
+      return redirect(url_for('register'))
   return render_template('register.html')
 
 @app.route('/AdminDash')
 def AdminDash():
-	return "AdminDash"
+  #db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  
+  stuff = []
+  query = "SELECT * FROM users"
+  cur.execute(query)
+  
+  results = cur.fetchall()
+  #for result in results:
+    
+  
+  
+  return "AdminDash"
 
 @app.route('/TutorDash')
 def TutorDash():
@@ -57,5 +73,31 @@ def TutorDash():
 def Schedule():
 	return "Schedule"
 
+@app.route('/search')
+def search():
+  return render_template('search.html', selectedMenu='search')
+
+@app.route('/search2')
+def search2():
+  if (searchByName != False):
+    stuff = {'firstname': request.form['firstname'],
+          'lastname': request.form['lastname']}
+  
+    db = utils.db_connect()
+    cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  
+    query = "SELECT firstname, lastname FROM tutors WHERE firstname LIKE " + stuff[0] + " OR lastname LIKE " + stuff[1] + ";"
+    cur.execute(query)
+    db.commit()
+    results = cur.fetchall()
+    print results
+  else: #Search by course
+    
+    
+  
+  
+  return render_template('search2.html', stuff = stuff)
+  
+
 if __name__ == '__main__':
- app.run(host='0.0.0.0', port=8080)
+  app.run(host='0.0.0.0', port=8080)
