@@ -78,7 +78,33 @@ def TutorDash():
 
 @app.route('/Schedule')
 def Schedule():
-	return "Schedule"
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+
+  query = "SELECT DISTINCT subject FROM classes"
+  cur.execute(query)
+  db.commit()
+
+  results=cur.fetchall()
+
+  return render_template('schedule.html', subjects=results)
+
+@app.route('/appoint2', methods=['GET', 'POST'])
+def appointment2():
+  subject = request.form['subject']
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+
+  query = "SELECT class FROM classes WHERE subject=\'" + subject + "\'"
+  cur.execute(query)
+  db.commit()
+
+  classes = cur.fetchall()
+  print classes
+
+  return render_template('schedule2.html', classes=classes)
+
+
 
 @app.route('/search')
 def search():
