@@ -3,6 +3,7 @@ def User():
     lastname = ""
     email = ""
     password = ""
+    flag = 0
 
 def getFirst(User):
     return User.firstname
@@ -27,4 +28,10 @@ def setEmail(mail):
 
 def setPass(word):
     User.password = word
+    
+def setFlag(num):
+    User.flag = num
+
+def getFlag(User):
+    return User.flag
     
