@@ -86,12 +86,22 @@ def search2():
     db = utils.db_connect()
     cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
   
-    query = "SELECT firstname, lastname FROM tutors WHERE firstname LIKE " + stuff[0] + " OR lastname LIKE " + stuff[1] + ";"
+    query = "SELECT firstname, lastname, courses FROM tutors WHERE firstname LIKE " + stuff[0] + " OR lastname LIKE " + stuff[1] + ";"
     cur.execute(query)
     db.commit()
     results = cur.fetchall()
     print results
   else: #Search by course
+    stuff = {'Subject': request.form['Subject'],
+              'CourseNum': request.form['CourseNum']}
+    
+    db = utils.db_connect()
+    cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+    query = "SELECT firstname, lastname FROM classes WHERE Subject LIKE " + stuff[0] + " OR CourseNum LIKE " + stuff[1] + ";"
+    cur.execute(query)
+    db.commit()
+    results = cur.fetchall()
+    print results
     
     
   
