@@ -12,11 +12,13 @@ CREATE TABLE IF NOT EXISTS users
 	lastname varchar(50) NOT NULL,
 	email varchar(50) NOT NULL,
 	password varchar(228) NOT NULL,
-	accountStatus int(5) NOT NULL,
+	accountStatus int(1) NOT NULL,
 	classes varchar(228),
   PRIMARY KEY (numId),
   INDEX (classes)
 );
+
+INSERT INTO users (firstname, lastname, email, password, accountStatus) VALUES ("Hi", "Testers", "Admin@umw.edu", "Admin", 1);
 
 CREATE TABLE IF NOT EXISTS appointments
 (
