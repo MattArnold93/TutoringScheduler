@@ -119,9 +119,21 @@ def appointment2():
   db.commit()
 
   classes = cur.fetchall()
-  print classes
 
   return render_template('schedule2.html', classes=classes)
+
+@app.route('/appoint3', methods=['GET', 'POST'])
+def appointment3():
+  selClass = request.form['class']
+  selType = request.form['schedule']
+  print selType
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+
+  #query = "SELECT "
+  results = 0
+
+  return render_template('schedule3.html', results=results)
 
 
 
