@@ -6,8 +6,28 @@ app.secret_key = os.urandom(24).encode('hex')
 
 @app.route('/index')
 def index():
-  print "hi"
-  return render_template('index.html')
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  queryStat = "SELECT accountStatus FROM users WHERE email = '" + session['username'] + "' AND password = '" + session['password'] + "';"
+  print queryStat
+  cur.execute(queryStat)
+  print "executed"
+  row = cur.fetchone()
+  print row['accountStatus']
+  if row['accountStatus'] == 1:
+    session['Status'] = "admin"
+  elif row['accountStatus'] == 2:
+    session['Status'] = "tutor"
+  elif row['accountStatus'] == 3:
+    session['Status'] = "student"
+  return render_template('index.html', row=row, )
+
+@app.route('/logout')
+def logout():
+  session.pop('username', None)
+  session.pop('password', None)
+  session.pop('Status', None)
+  return redirect(url_for('login'))
 
 @app.route('/createTutor')
 def createTutor():
@@ -15,25 +35,24 @@ def createTutor():
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
-    try:
-      db = utils.db_connect()
-      cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-      if request.method == 'POST':
-        print "yay"
-        email = request.form['email']
-        password = request.form['password']
-        query = "SELECT * FROM users WHERE email = '%s' AND password = '%s'" % (email, password) 
-        cur.execute(query)
-        print query
-        db.commit()
-        print "committed"
-  
-        if cur.fetchone():
-          session['logged_in'] = email
-          print "redirect"
-          return redirect(url_for('index'))
-    except:
-      print("error connecting to database")
+    db = utils.db_connect()
+    cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+    if request.method == 'POST':
+      print "yay"
+      row = []
+      email = request.form['email']
+      password = request.form['password']
+      query = "SELECT * FROM users WHERE email = '%s' AND password = '%s'" % (email, password) 
+      print query
+      cur.execute(query)
+      login = cur.fetchall()
+      db.commit()
+      print "committed"
+      if login:
+        session['username'] = email
+        session['password'] = password
+        print "redirect"
+        return redirect(url_for('index'))
     return render_template('login.html')
 
 @app.route('/register', methods=['GET','POST'])
@@ -47,7 +66,7 @@ def register():
     password=request.form['password']
     print firstname + " " + lastname + " " + email + " " + password
     if "umw.edu" in email:
-      query = "INSERT INTO users (firstname,lastname,email,password,accountStatus) VALUES('%s','%s','%s','%s',1);" % (firstname,lastname,email,password)
+      query = "INSERT INTO users (firstname,lastname,email,password,accountStatus) VALUES('%s','%s','%s','%s',3);" % (firstname,lastname,email,password)
       print query
       cur.execute(query)
       db.commit()
@@ -143,4 +162,4 @@ def search2():
   
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=8080, debug=True)
+  app.run(host='0.0.0.0', port=3000, debug=True)
