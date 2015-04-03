@@ -29,8 +29,49 @@ def logout():
   session.pop('Status', None)
   return redirect(url_for('login'))
 
+@app.route('/edit', methods=['GET', 'POST'])
+def edit():
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  
+  #password = session['password']
+  oldP = request.form['oldpassword']
+  newPass = request.form['password']
+  #email = session['username']
+  #level = session['Status']
+  
+  #if oldP is password:
+    #if level is not "admin":
+    
+  #query = "UPDATE users SET password = '" + newPass + "' WHERE email = '" + email + "';"
+  #cur.execute(query)
+  #db.commit()
+    
+   # else:
+    
+  #firstname = request.form['firstName']
+  #lastname = request.form['lastName']
+    
+  #query = "UPDATE users SET firstname = '" + firstname + "', lastname = '" + lastname + "', email = '" + email + "', password = '" + newPass + "' WHERE email = '" + email + "';"
+  #cur.execute(query)
+  #db.commit()
+    
+  return render_template('edit.html')
+
 @app.route('/createTutor')
 def createTutor():
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  if request.method == 'POST':
+    firstname = request.form['firstnName']
+    lastname = request.form['lastName']
+    email = request.form['email']
+    password = request.form['password']
+    course = request.form['course']
+    query = "INSERT INTO users (firstname,lastname,email,password,course,accountStatus) VALUES('%s','%s','%s','%s','%s',2);" % (firstname,lastname,email,password,course)
+    print query
+    cur.execute(query)
+    db.commit()
   return render_template('createTutor.html')
 
 @app.route('/', methods=['GET', 'POST'])
@@ -77,7 +118,7 @@ def register():
 
 @app.route('/AdminDash')
 def AdminDash():
-  #db = utils.db_connect()
+  db = utils.db_connect()
   cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
   
   stuff = []
@@ -136,4 +177,4 @@ def search2():
   
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=3000, debug=True)
+  app.run(host='0.0.0.0', port=8080, debug=True)

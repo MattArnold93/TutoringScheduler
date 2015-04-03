@@ -2,16 +2,20 @@
 
 {% block content %}
 <div class = "articleTitle">
-  <h1>Create a tutor</h1>
+  <h1>Edit your information</h1>
   
   <div class = "articleContent">
-        <p>Type in the name and UMW email of the tutor. Make a generic password to hand off to the tutor.</p>
-            <form method="post" action="/">
+        
+            <form method="POST" action="/">
+                {% if session['Status'] == "admin" %}
                 <p>First Name: <input name="firstName" type="text" id="firstName" placeholder="firstName" maxlength="96"/></p>
                 <p>Last Name: <input name="lastName" type="text" id="lastName" placeholder="lastName" maxlength="96"/></p>
                 <p>Email: <input name="email" type="text" id="email" placeholder="email" maxlength="96"/></p>
-                <p>Password: <input name="password" type="password" id="password" placeholder="password" maxlength="64"/></p><br/>
-                <input type="submit" name="submit" value="Create" />
+                {% endif %}
+                <p>Old Password: <input name="oldpassword" type="password" id="oldpassword" maxlength="64"/></p>
+                <p>New Password: <input name="password" type="password" id="password" maxlength="64"/></p><br/>
+                <input type="submit" name="submit" value="Edit" />
+                
    
     
 {% endblock %}

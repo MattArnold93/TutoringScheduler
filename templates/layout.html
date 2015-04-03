@@ -31,7 +31,12 @@
           <li  {% if selectedMenu == "Register" %} class="selected" {% endif %}  >
             <a href="/register">Register</a></li>
           {% endif %}
+          {% if session['username'] %}
+          <li><a href="/edit">Edit Information</a></li>
+          {% endif %}
+          {% if session['username'] %}
           <li><a href="/search">Search for Tutor</a></li>
+          {% endif %}
           {% if session['username'] %}
           <li><a href="/logout">Log Out</a></li>
           {% endif %}
