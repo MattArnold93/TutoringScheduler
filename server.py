@@ -20,7 +20,7 @@ def index():
     session['Status'] = "tutor"
   elif row['accountStatus'] == 3:
     session['Status'] = "student"
-  return render_template('index.html', row=row, )
+  return render_template('index.html', row=row)
 
 @app.route('/logout')
 def logout():
@@ -29,9 +29,68 @@ def logout():
   session.pop('Status', None)
   return redirect(url_for('login'))
 
-@app.route('/createTutor')
+@app.route('/createTutor', methods=['GET', 'POST'])
 def createTutor():
-  return render_template('createTutor.html')
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  created = " "
+  if request.method == 'POST':
+      row = []
+      first = request.form['firstName']
+      last = request.form['lastName']
+      email = request.form['email']
+      course = request.form['course']
+      password = request.form['password']
+      query2 = "SELECT * FROM users WHERE email = '%s';" % (email)
+      cur.execute(query2)
+      test = cur.fetchone()
+      if test:
+        print test
+        if test['accountStatus'] == 1:
+          created = "admin"
+          print "Admin"
+        elif test['accountStatus'] == 2:
+          created = "no"
+          print "Tutor"
+        elif test['accountStatus'] == 3:
+          print "Student"
+          created = "updated"
+          #if the query here does not activate, take out classes + and leave it '%s'
+          query3 = "UPDATE users SET accountStatus = 2, classes = classes + '%s' WHERE email = '%s';" % (course, email)
+          cur.execute(query3)
+      else:
+        print "Not Created"
+        created = "yes"
+        query = "INSERT INTO users (firstname,lastname,email,password,accountStatus,classes) VALUES('%s','%s','%s','%s',2, '%s');" % (first,last,email,password, course)
+        cur.execute(query)
+        db.commit()
+  return render_template('createTutor.html', created=created)
+
+@app.route('/delete', methods=['GET', 'POST'])
+def delete():
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  exist = " "
+  if request.method == 'POST':
+    firstname = request.form['firstName']
+    lastname = request.form['lastName']
+    email = request.form['email']
+    reason = request.form['reason']
+    query = "SELECT * FROM users WHERE firstname = '%s' AND lastname = '%s' AND email = '%s';" % (firstname, lastname, email)
+    cur.execute(query)
+    account = cur.fetchone()
+    print session['username']
+    print email
+    if email == session['username']:
+      exist = "admin"
+    elif account:
+      exist = "yes"
+      query2 = "DELETE FROM users WHERE firstname = '%s' AND lastname = '%s' AND email = '%s';" % (firstname, lastname, email)
+      cur.execute(query2)
+      db.commit();
+    else:
+      exist = "no"
+  return render_template('delete.html', exists=exist)
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -51,6 +110,7 @@ def login():
       if login:
         session['username'] = email
         session['password'] = password
+        session['logged_in'] = "yes"
         print "redirect"
         return redirect(url_for('index'))
     return render_template('login.html')
