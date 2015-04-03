@@ -23,10 +23,6 @@
         <ul id="menu">
           <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
 
-          {% if session['Status'] == "admin" %}
-          <li><a href="/createTutor">Create a Tutor</a></li>
-          <li><a href="/search">Search for Tutor</a></li>
-          {% endif %}
           {% if session['logged_in'] == "yes" %}
           <li  {% if selectedMenu == "Home" %} class="selected" {% endif %}  >
             <a href="/index">Home</a></li>
@@ -36,7 +32,12 @@
           <li  {% if selectedMenu == "Register" %} class="selected" {% endif %}  >
             <a href="/register">Register</a></li>
           {% endif %}
-          {% if session['username'] %}
+          {% if session['Status'] == "admin" %}
+          <li><a href="/createTutor">Create a Tutor</a></li>
+          <li><a href="/search">Search for Tutor</a></li>
+          <li><a href="/logout">Log Out</a></li>
+          {% endif %}
+          {% if session['Status'] == "tutor" or session['Status'] == "student" %}
           <li><a href="/search">Search for Tutor</a></li>
           <li><a href="/Schedule">Book an Appointment</a></li>
           <li><a href="/logout">Log Out</a></li>

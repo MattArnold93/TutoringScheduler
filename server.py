@@ -151,10 +151,6 @@ def AdminDash():
   
   return "AdminDash"
 
-@app.route('/TutorDash')
-def TutorDash():
-	return "TutorDash"
-
 @app.route('/Schedule')
 def Schedule():
   db = utils.db_connect()
