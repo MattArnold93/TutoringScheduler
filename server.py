@@ -151,13 +151,93 @@ def AdminDash():
   
   return "AdminDash"
 
-@app.route('/TutorDash')
-def TutorDash():
-	return "TutorDash"
-
 @app.route('/Schedule')
 def Schedule():
-	return "Schedule"
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+
+  query = "SELECT DISTINCT subject FROM classes"
+  cur.execute(query)
+  db.commit()
+
+  results=cur.fetchall()
+
+  return render_template('schedule.html', subjects=results)
+
+@app.route('/appoint2', methods=['GET', 'POST'])
+def appointment2():
+  subject = request.form['subject']
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+
+  query = "SELECT class FROM classes WHERE subject=\'" + subject + "\'"
+  cur.execute(query)
+  db.commit()
+
+  classes = cur.fetchall()
+
+  return render_template('schedule2.html', classes=classes)
+
+@app.route('/appoint3', methods=['GET', 'POST'])
+def appointment3():
+  selClass = request.form['class']
+  selType = request.form['schedule']
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  fullDict = []
+  #query = "SELECT numId, classes FROM users;"
+  #cur.execute(query)
+  #db.commit() 
+  #users = cur.fetchall()
+  #length = len(users)
+  #for y in range(0,length):
+   # dict1 = users[y]
+    #classes = dict1['classes']
+    #if classes == None:
+     # continue
+    #if selClass in classes:
+     # print "found 1"
+    #else:
+     # continue
+
+
+  
+
+  if selType == "Tutor":
+   # query = "SELECT numId, classes FROM users WHERE INNER JOIN times ON users.numId=times.studentId"
+   print "stuff"
+  else:
+    query = "SELECT studentId, classes, dayofweek, hourof FROM times"
+    cur.execute(query)
+    db.commit()
+    usrTimes = cur.fetchall()
+    print usrTimes
+    length = len(usrTimes)
+    for y in range(0, length):
+      dict1 = usrTimes[y]
+      classes = dict1['classes']
+      if classes == None:
+        continue
+      if selClass in classes:
+        fullDict.append(dict1)
+      else:
+        continue
+    results = fullDict
+    for item in results:
+      if item['dayofweek'] == "Monday":
+        print "fun"
+      elif item['dayofweek'] == "Tuesday":
+        print "not fun"
+      elif item['dayofweek'] == "Wednesday":
+        print "bafds"
+      else:
+        print "sdgsdddddss"
+  return render_template('schedule3.html', results=results)
+
+#@app.route('/appoint4', methods=['GET', 'POST'])
+#def appointment4():
+
+
 
 @app.route('/search')
 def search():

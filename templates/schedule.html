@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1> Book an Appointment </h1>
+<p> Please choose a subject</p>
+<form method="post" action="/appoint2">
+	<select class="subjecttype" name="subject">
+		{% for thing in subjects %}
+			<option value={{thing['subject']}}>{{thing['subject']}}</option>
+		{% endfor %}
+	</select> 
+	<input type="submit" name="submit" value="Submit">
+</form>
+{% endblock %}

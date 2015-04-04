@@ -19,6 +19,9 @@ CREATE TABLE IF NOT EXISTS users
 );
 
 INSERT INTO users (firstname, lastname, email, password, accountStatus) VALUES ("Hi", "Testers", "Admin@umw.edu", "Admin", 1);
+INSERT INTO users (firstname, lastname, email, password, accountStatus) VALUES ("We Meet", "Again", "Student@umw.edu", "Student", 3);
+INSERT INTO users (firstname, lastname, email, password, accountStatus, classes) VALUES ("Tutor", "Tutor", "Tutor@umw.edu", "tutor", 2, "CPSC-110");
+INSERT INTO users (firstname, lastname, email, password, accountStatus, classes) VALUES ("Toot", "Tutor", "Toot@umw.edu", "tutor", 2, "CPSC-110, FREN-331");
 
 CREATE TABLE IF NOT EXISTS appointments
 (
@@ -40,3 +43,22 @@ CREATE TABLE IF NOT EXISTS classes
 	subject varchar(15),
   INDEX (subject)
 );
+
+INSERT INTO classes (class, subject) VALUES ("CPSC-110", "CPSC");
+INSERT INTO classes (class, subject) VALUES ("CPSC-220", "CPSC");
+INSERT INTO classes (class, subject) VALUES ("SPAN-201", "SPAN");
+INSERT INTO classes (class, subject) VALUES ("FREN-331", "FREN");
+
+CREATE TABLE IF NOT EXISTS times
+(
+	studentId INT NOT NULL,
+	PRIMARY KEY (studentId),
+	classes varchar (400) NOT NULL,
+	dayofweek varchar (10) NOT NULL,
+	hourof varchar (10) NOT NULL,
+	INDEX (studentId)
+);
+
+Insert INTO times (studentId, classes, dayofweek, hourof) VALUES (3, "CPSC-110", "Monday", "10:00AM");
+Insert INTO times (studentId, classes, dayofweek, hourof) VALUES (4, "CPSC-110, FREN-331", "Tuesday", "1:00PM");
+Insert INTO times (studentId, classes, dayofweek, hourof) VALUES (4, "CPSC-110, FREN-331", "Monday", "10:00AM");
