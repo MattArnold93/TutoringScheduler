@@ -175,9 +175,7 @@ def AdminDash():
   
   results = cur.fetchall()
   #for result in results:
-    
-  
-  
+
   return "AdminDash"
 
 @app.route('/TutorDash')

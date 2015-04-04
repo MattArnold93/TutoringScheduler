@@ -3,9 +3,9 @@ def User():
     lastname = ""
     email = ""
     password = ""
-    flag = 0
+    accountStatus = 0
     schedule = ""
-    course = []
+    classes = []
     
 
 def getFirst(User):
@@ -20,8 +20,8 @@ def getEmail(User):
 def getPass(User):
     return User.password
     
-def getFlag(User):
-    return User.flag
+def getAccountStatus(User):
+    return User.accountStatus
     
 def getSchedule(User):
     return User.schedule
@@ -38,8 +38,8 @@ def setEmail(mail):
 def setPass(word):
     User.password = word
     
-def setFlag(num):
-    User.flag = num
+def setAccountStatus(num):
+    User.accountStatus = num
     
 def setSchedule(times):
-    user.schedule = times
+    User.schedule = times
