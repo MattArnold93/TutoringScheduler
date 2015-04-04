@@ -14,7 +14,7 @@ This is a list of things to install to allow this to work:
 Download all of these things and install them and you should be good to go!
 
 #Starting Up The Server:
-This will be updated one the Database functionallity is added. To start up your server currently, in the terminal, type the command "python server.py". This will fire up the server. To view the application, navigate to localhost:6782 in the web browser of your choice. Whatever is has been built and is functional will be present for you to enjoy. Again, this will be updated once Sql comes into play
+This will be updated one the Database functionallity is added. To start up your server currently, in the terminal, type the command "python server.py". This will fire up the server. To view the application, navigate to localhost:6782 in the web browser of your choice. Whatever is has been built and is functional will be present for you to enjoy. To start up sql, do mysql.server start to start the sql server. Once thats been completed, type mysql -u root -p into the terminal and hit enter. It will ask you for a password, which you should leave blank. Once in the mysql interface use the command "source tutoring.sql" to pull in the sql file to mysql. YOU MUST have opened mysql in the TutoringSchedule directory to source the file. 
 
 #Working On Features/Functions:
 When workin on new features, always create a new branch. Never work off of the master branch. This can cause a multitude of issues. The master should always contain stable and working features, not features that are currently being developed.
