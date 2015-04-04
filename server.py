@@ -33,28 +33,29 @@ def logout():
 def edit():
   db = utils.db_connect()
   cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+
+  if request.method == 'POST':
+    #password = session['password']
+    oldP = request.form['oldpassword']
+    newPass = request.form['password']
+    email = session['username']
+    level = session['Status']
   
-  #password = session['password']
-  oldP = request.form['oldpassword']
-  newPass = request.form['password']
-  #email = session['username']
-  #level = session['Status']
-  
-  #if oldP is password:
-    #if level is not "admin":
+    #if oldP is password:
+      #if level is not "admin":
     
-  #query = "UPDATE users SET password = '" + newPass + "' WHERE email = '" + email + "';"
-  #cur.execute(query)
-  #db.commit()
+    #query = "UPDATE users SET password = '" + newPass + "' WHERE email = '" + email + "';"
+    #cur.execute(query)
+    #db.commit()
     
-   # else:
+    #else:
     
-  #firstname = request.form['firstName']
-  #lastname = request.form['lastName']
+      #firstname = request.form['firstName']
+      #lastname = request.form['lastName']
     
-  #query = "UPDATE users SET firstname = '" + firstname + "', lastname = '" + lastname + "', email = '" + email + "', password = '" + newPass + "' WHERE email = '" + email + "';"
-  #cur.execute(query)
-  #db.commit()
+    #query = "UPDATE users SET firstname = '" + firstname + "', lastname = '" + lastname + "', email = '" + email + "', password = '" + newPass + "' WHERE email = '" + email + "';"
+    #cur.execute(query)
+    #db.commit()
     
   return render_template('edit.html')
 
@@ -303,5 +304,5 @@ def search2():
   
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=8080, debug=True)
+  app.run(host='0.0.0.0', port=3000, debug=True)
 
