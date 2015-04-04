@@ -1,5 +1,50 @@
 {% extends "layout.html" %}
 
 {% block content %}
-	<h1> END </h1>
+	<h1> Hours Available </h1>
+	<table style="width: 100%;">
+	<tr>
+		<th> Monday </th>
+		<th> Tuesday </th>
+		<th> Wednesday </th>
+		<th> Thursday </th>
+		<th> Friday </th>
+	</tr>
+	<form method="post" action="/appoint4">
+	{% for thing in results %}
+	<tr>
+		{% if thing['dayofweek'] == 'Monday' %}
+		<td class='mon'>{{thing['hourof']}}</td>
+		<td> </td>
+		<td> </td>
+		<td> </td>
+		<td> </td>
+		{% elif thing['dayofweek'] == 'Tuesday' %}
+		<td> </td>
+		<td class='tues'> {{thing['hourof']}} </td>
+		<td> </td>
+		<td> </td>
+		<td> </td>
+		{% elif thing['dayofweek'] == 'Wednesday' %}
+		<td> </td>
+		<td> </td>
+		<td> {{thing['hourof']}} </td>
+		<td> </td>
+		<td> </td>
+		{% elif thing['dayofweek'] == 'Thursday' %}
+		<td> </td>
+		<td> </td>
+		<td> </td>
+		<td> {{thing['hourof']}} </td>
+		<td> </td>
+		{% else %}
+		<td> </td>
+		<td> </td>
+		<td> </td>
+		<td> </td>
+		<td> {{thing['hourof']}} </td>
+		{% endif %}
+	</tr>
+	{% endfor %}
+	</table> 
 {% endblock %}

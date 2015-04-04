@@ -20,8 +20,8 @@ CREATE TABLE IF NOT EXISTS users
 
 INSERT INTO users (firstname, lastname, email, password, accountStatus) VALUES ("Hi", "Testers", "Admin@umw.edu", "Admin", 1);
 INSERT INTO users (firstname, lastname, email, password, accountStatus) VALUES ("We Meet", "Again", "Student@umw.edu", "Student", 3);
-INSERT INTO users (firstname, lastname, email, password, accountStatus) VALUES ("Tutor", "Tutors", "Tutor@umw.edu", "Tutor", 2);
-INSERT INTO users (firstname, lastname, email, password, accountStatus) VALUES ("Other", "Tutor", "Other@umw.edu", "Tutor", 2);
+INSERT INTO users (firstname, lastname, email, password, accountStatus, classes) VALUES ("Tutor", "Tutor", "Tutor@umw.edu", "tutor", 2, "CPSC-110");
+INSERT INTO users (firstname, lastname, email, password, accountStatus, classes) VALUES ("Toot", "Tutor", "Toot@umw.edu", "tutor", 2, "CPSC-110, FREN-331");
 
 CREATE TABLE IF NOT EXISTS appointments
 (
@@ -53,14 +53,12 @@ CREATE TABLE IF NOT EXISTS times
 (
 	studentId INT NOT NULL,
 	PRIMARY KEY (studentId),
-	usremail varchar(30) NOT NULL,
-	Monday varchar(100),
-	Tuesday varchar(100),
-	Wednesday varchar(100),
-	Thursday varchar(100),
-	Friday varchar(100),
+	classes varchar (400) NOT NULL,
+	dayofweek varchar (10) NOT NULL,
+	hourof varchar (10) NOT NULL,
 	INDEX (studentId)
 );
 
-Insert INTO times (studentId, usremail, Monday, Tuesday, Wednesday, Thursday, Friday) VALUES (3, "Tutor@umw.edu", "10:00AM, 1:00PM", NULL, "4:00PM", NULL, NULL);
-Insert INTO times (studentId, usremail, Monday, Tuesday, Wednesday, Thursday, Friday) VALUES (4, "Other@umw.edu", "10:00AM, 1:00PM", "6:00PM", "4:00PM", NULL, "5:00PM");
+Insert INTO times (studentId, classes, dayofweek, hourof) VALUES (3, "CPSC-110", "Monday", "10:00AM");
+Insert INTO times (studentId, classes, dayofweek, hourof) VALUES (4, "CPSC-110, FREN-331", "Tuesday", "1:00PM");
+Insert INTO times (studentId, classes, dayofweek, hourof) VALUES (4, "CPSC-110, FREN-331", "Monday", "10:00AM");
