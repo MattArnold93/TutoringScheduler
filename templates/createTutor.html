@@ -2,16 +2,29 @@
 
 {% block content %}
 <div class = "articleTitle">
-  <h1>Create a tutor</h1>
+  <h1>Create a Tutor </h1>
   
   <div class = "articleContent">
-        <p>Type in the name and UMW email of the tutor. Make a generic password to hand off to the tutor.</p>
-            <form method="post" action="/">
-                <p>First Name: <input name="firstName" type="text" id="firstName" placeholder="firstName" maxlength="96"/></p>
-                <p>Last Name: <input name="lastName" type="text" id="lastName" placeholder="lastName" maxlength="96"/></p>
-                <p>Email: <input name="email" type="text" id="email" placeholder="email" maxlength="96"/></p>
-                <p>Password: <input name="password" type="password" id="password" placeholder="password" maxlength="64"/></p><br/>
-                <input type="submit" name="submit" value="Create" />
+    {% if created == "yes" %}
+    <p>Congratulations! You've created a tutor!</p>
+    {% elif created == "no" %}
+    <p>Error! Account is already made as tutor!</p>
+    {% elif created == "updated" %}
+    <p>Account already made. Updated to Tutor.</p>
+    {% elif created == "admin" %}
+    <p>Error! Account is admin!</p>
+    {% endif %}
+        <p>Create a Tutor</p>
+    <p>NOTE: When adding courses, seperate them by commas, not spaces</p>
+    <br>
+            <form method="post">
+                <p>First Name: <input name="firstName" type="text" id="firstName" placeholder="firstName" maxlength="96"/></p><br/>
+                <p>Last Name: <input name="lastName" type="text" id="lastName" placeholder="lastName" maxlength="96"/></p><br/>
+                <p>Email: <input name="email" type="text" id="email" placeholder="email" maxlength="96"/></p><br/>
+              <p>Add Course(s): <input name="course" type="text" id="course" placeholder="course" maxlength="150"/></p><br/>
+                <p>Password: <input name="password" type="password" id="password" placeholder="password" maxlength="64"/></p><br/><br/>
+                <input type="submit" name="submit" value="Sign In" />
+
    
     
 {% endblock %}
