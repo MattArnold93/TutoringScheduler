@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1> Book an Appointment </h1>
+<p> Please choose a class</p>
+<form method="post" action="/appoint3">
+	<select class="classtype" name="class">
+		{% for thing in classes %}
+			<option value={{thing['class']}}>{{thing['class']}}</option>
+		{% endfor %}
+	</select> 
+	<br>
+	<br>
+	<p> Would you like to search for a particular Tutor in this class? <p>
+	<input type="checkbox" name="schedule" value="Tutor"> Yes Please <br>
+	<input type="checkbox" name="schedule" value="Time"> I Will take any tutor <br>
+	<input type="submit" name="submit" value="Submit">
+</form>
+{% endblock %}
