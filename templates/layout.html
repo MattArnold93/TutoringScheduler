@@ -37,10 +37,19 @@
           {% endif %}
           {% if session['Status'] == "tutor" or session['Status'] == "student" %}
           <li><a href="/search">Search for Tutor</a></li>
+<<<<<<< HEAD
           <li><a href="/Schedule">Book an Appointment</a></li>
           {% endif %}
           {% if session['username'] %}
           <li><a href="/edit">Edit Information</a></li>
+=======
+
+          {% endif %}
+          {% if session['username'] %}
+
+          <li><a href="/Schedule">Book an Appointment</a></li>
+          <li><a href="/edit"> Edit Information</a></li>
+>>>>>>> origin/master
           <li><a href="/logout">Log Out</a></li>
           {% endif %}
           
