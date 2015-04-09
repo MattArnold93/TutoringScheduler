@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-import MySQLdb, utils, os
+import MySQLdb, utils, os, unicodedata
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24).encode('hex')
@@ -33,31 +33,47 @@ def logout():
 def edit():
   db = utils.db_connect()
   cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-
+  error = " "
   if request.method == 'POST':
-    #password = session['password']
+    password = session['password']
     oldP = request.form['oldpassword']
     newPass = request.form['password']
     email = session['username']
     level = session['Status']
+    
+    #password = password.toString()
+    #oldP = oldP.toString()
+    
+    password = unicodedata.normalize('NFKD', password).encode('ascii','ignore')
+    oldP = unicodedata.normalize('NFKD', oldP).encode('ascii','ignore')
+    newPass = unicodedata.normalize('NFKD', newPass).encode('ascii','ignore')
+    print "PASSWORD = " + password
+    print "OLD P = " + oldP
+    print "NEW P = " + newPass
+    
+    error = "notSame"
+    #print "IF OLDP"
+    if oldP == password:
+      print "IF OLDP"
+      if level != "admin":
+        query = "UPDATE users SET password = '%s' WHERE email = '%s'" % (newPass, email)
+        print "Level = " + level
+        cur.execute(query)
+        db.commit()
+        error = "password"
   
-    #if oldP is password:
-      #if level is not "admin":
+      elif level == "admin":
+        print "IF ADMIN"
+        firstname = request.form['firstName']
+        lastname = request.form['lastName']
+        newEmail = request.form['email']
+        query = "UPDATE users SET firstname = '%s', lastname = '%s', email = '%s', password = '%s' WHERE email = '%s'" % (firstname, lastname, newEmail, newPass, email)
+        cur.execute(query)
+        db.commit()
+        error = "new"
+
     
-    #query = "UPDATE users SET password = '" + newPass + "' WHERE email = '" + email + "';"
-    #cur.execute(query)
-    #db.commit()
-    
-    #else:
-    
-      #firstname = request.form['firstName']
-      #lastname = request.form['lastName']
-    
-    #query = "UPDATE users SET firstname = '" + firstname + "', lastname = '" + lastname + "', email = '" + email + "', password = '" + newPass + "' WHERE email = '" + email + "';"
-    #cur.execute(query)
-    #db.commit()
-    
-  return render_template('edit.html')
+  return render_template('edit.html', errors=error)
 
 @app.route('/createTutor', methods=['GET', 'POST'])
 def createTutor():
@@ -134,9 +150,10 @@ def login():
       query = "SELECT * FROM users WHERE email = '%s' AND password = '%s'" % (email, password) 
       print query
       cur.execute(query)
-      login = cur.fetchall()
+      login = cur.fetchone()
       db.commit()
       print "committed"
+      print('login: ', login)
       if login:
         session['username'] = email
         session['password'] = password
@@ -213,6 +230,7 @@ def appointment3():
   db = utils.db_connect()
   cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
   fullDict = []
+  results = []
   #query = "SELECT numId, classes FROM users;"
   #cur.execute(query)
   #db.commit() 
@@ -260,7 +278,10 @@ def appointment3():
         print "bafds"
       else:
         print "sdgsdddddss"
-  return render_template('schedule3.html', results=results)
+  if results != []:
+    return render_template('schedule3.html', results=results)
+  else:
+    return render_template('schedule3.html')
 
 #@app.route('/appoint4', methods=['GET', 'POST'])
 #def appointment4():
@@ -304,5 +325,5 @@ def search2():
   
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=3000, debug=True)
+  app.run(host='0.0.0.0', port=8080, debug=True)
 

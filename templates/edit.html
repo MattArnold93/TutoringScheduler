@@ -5,16 +5,30 @@
   <h1>Edit your information</h1>
   
   <div class = "articleContent">
-        
-            <form method="POST" action="/">
+    {% if errors == "new" %}
+    <p>Administrator Account has be updated.</p>
+    <br>
+    <br>
+    {% elif errors == "password" %}
+    <p>Your password has been updated.</p>
+    <br>
+    <br>
+    {% elif errors == "notSame" %}
+    <p>Your old passwords did not match. Unable to update.</p>
+    <br>
+    <br>
+    {% endif %}
+            <form method="post">
                 {% if session['Status'] == "admin" %}
                 <p>First Name: <input name="firstName" type="text" id="firstName" placeholder="First Name" maxlength="96"/></p>
                 <p>Last Name: <input name="lastName" type="text" id="lastName" placeholder="Last Name" maxlength="96"/></p>
                 <p>Email: <input name="email" type="text" id="email" placeholder="Email" maxlength="96"/></p>
                 {% endif %}
+                {% if session['Status'] == "admin" or session['Status'] == "student" or session['Status'] == "tutor" %}
                 <p>Old Password: <input name="oldpassword" type="password" id="oldpassword" maxlength="64"/></p>
                 <p>New Password: <input name="password" type="password" id="password" maxlength="64"/></p><br/>
                 <input type="submit" name="submit" value="Edit" />
+                {% endif %}
    
     
 {% endblock %}
