@@ -142,6 +142,7 @@ def delete():
 def login():
     db = utils.db_connect()
     cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+    error = ""
     if request.method == 'POST':
       print "yay"
       row = []
@@ -160,27 +161,47 @@ def login():
         session['logged_in'] = "yes"
         print "redirect"
         return redirect(url_for('index'))
-    return render_template('login.html')
+      else:
+        error = "true"
+        print "error"
+    return render_template('login.html', error=error)
 
 @app.route('/register', methods=['GET','POST'])
 def register():
   db = utils.db_connect()
   cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  errorMail = ""
+  errorFirst = ""
+  errorLast = ""
+  errorPass = ""
+  error = ""
   if request.method == 'POST':
     firstname=request.form['firstname']
     lastname=request.form['lastname']
     email=request.form['email']
     password=request.form['password']
     print firstname + " " + lastname + " " + email + " " + password
-    if "umw.edu" in email:
+    if "mail.umw.edu" in email and firstname and lastname and password:
       query = "INSERT INTO users (firstname,lastname,email,password,accountStatus) VALUES('%s','%s','%s','%s',3);" % (firstname,lastname,email,password)
       print query
       cur.execute(query)
       db.commit()
       return redirect(url_for('login'))
     else:
-      return redirect(url_for('register'))
-  return render_template('register.html')
+      error = "true"
+      if "mail.umw.edu" not in email or not email:
+        errorMail = "true"
+        print "nomail"
+      if not firstname:
+        errorFirst = "true"
+        print "Noname"
+      if not lastname:
+        errorLast = "true"
+        print "noname2"
+      if not password:
+        errorPass = "true"
+        print "nopass"
+  return render_template('register.html', errorMail=errorMail, errorFirst=errorFirst, errorLast=errorLast, errorPass=errorPass, error=error)
 
 @app.route('/AdminDash')
 def AdminDash():
@@ -286,44 +307,38 @@ def appointment3():
 #@app.route('/appoint4', methods=['GET', 'POST'])
 #def appointment4():
 
-
-
-@app.route('/search')
+@app.route('/search', methods=['GET', 'POST'])
 def search():
-  return render_template('search.html', selectedMenu='search')
-
-@app.route('/search2')
-def search2():
-  if (searchbyname != False):
-    stuff = {'firstname': request.form['firstname'],
-          'lastname': request.form['lastname']}
-  
-    db = utils.db_connect()
-    cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-  
-    query = "SELECT firstname, lastname, courses FROM tutors WHERE firstname LIKE " + stuff[0] + " OR lastname LIKE " + stuff[1] + ";"
-    cur.execute(query)
-    db.commit()
-    results = cur.fetchall()
-    print results
-  else: #Search by course
-    stuff = {'Subject': request.form['Subject'],
-              'CourseNum': request.form['CourseNum']}
-    
-    db = utils.db_connect()
-    cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-    query = "SELECT firstname, lastname FROM classes WHERE Subject LIKE " + stuff[0] + " OR CourseNum LIKE " + stuff[1] + ";"
-    cur.execute(query)
-    db.commit()
-    results = cur.fetchall()
-    print results
-    
-    
-  
-  
-  return render_template('search2.html', stuff = stuff)
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  stuff = ""
+  results = ""
+  queryType = ""
+  print request.method
+  if request.method == 'POST':
+    queryType = "yes"
+    firstname = request.form['firstname']
+    lastname = request.form['lastname']
+    print "DOOO"
+    if firstname or lastname:
+      print "apples"
+      query = "SELECT firstname, lastname, courses FROM tutors WHERE firstname LIKE '" + firstname + "' OR lastname LIKE '" + lastname + "';"
+      print query
+      cur.execute(query)
+      results = cur.fetchall()
+      db.commit()
+    else: #Search by course
+      print "meeee"
+      subject = request.form['Subject']
+      course = request.form['CourseNum']
+      query = "SELECT 
+      cur.execute(query)
+      results = cur.fetchall()
+      db.commit()
+      print results
+  return render_template('search.html', stuff = stuff, selectedMenu='search', results=results, queryType=queryType)
   
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=8080, debug=True)
+  app.run(host='0.0.0.0', port=3000, debug=True)
 
