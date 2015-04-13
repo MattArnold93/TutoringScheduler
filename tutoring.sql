@@ -19,9 +19,9 @@ CREATE TABLE IF NOT EXISTS users
 );
 
 INSERT INTO users (firstname, lastname, email, password, accountStatus) VALUES ("Hi", "Testers", "Admin@umw.edu", "Admin", 1);
-INSERT INTO users (firstname, lastname, email, password, accountStatus) VALUES ("We Meet", "Again", "Student@umw.edu", "Student", 3);
-INSERT INTO users (firstname, lastname, email, password, accountStatus, classes) VALUES ("Tutor", "Tutor", "Tutor@umw.edu", "tutor", 2, "CPSC-110");
-INSERT INTO users (firstname, lastname, email, password, accountStatus, classes) VALUES ("Toot", "Tutor", "Toot@umw.edu", "tutor", 2, "CPSC-110, FREN-331");
+INSERT INTO users (firstname, lastname, email, password, accountStatus) VALUES ("We Meet", "Again", "Student@mail.umw.edu", "Student", 3);
+INSERT INTO users (firstname, lastname, email, password, accountStatus, classes) VALUES ("Tutor", "Tutor", "Tutor@mail.umw.edu", "tutor", 2, "CPSC-110");
+INSERT INTO users (firstname, lastname, email, password, accountStatus, classes) VALUES ("Toot", "Tutor", "Toot@mail.umw.edu", "tutor", 2, "CPSC-110,FREN-331");
 
 CREATE TABLE IF NOT EXISTS appointments
 (

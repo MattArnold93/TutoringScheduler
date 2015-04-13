@@ -6,6 +6,10 @@
   
   <div class = "articleContent">
     <p>Please Login Below</p>
+    <br>
+    {% if error == "true" %}
+    <p>Error. Username or Password is incorrect. Please try again.</p>
+    {% endif %}
      <form method="post" action="/">
       <p>Email: <input name="email" type="text" id="email" placeholder="email" maxlength="96"/></p><br/>
       <p>Password: <input name="password" type="password" id="password" placeholder="password" maxlength="64"/></p><br/><br/>

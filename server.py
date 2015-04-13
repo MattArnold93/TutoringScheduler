@@ -27,53 +27,49 @@ def logout():
   session.pop('username', None)
   session.pop('password', None)
   session.pop('Status', None)
+  session.pop('logged_in', None)
   return redirect(url_for('login'))
 
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
-  db = utils.db_connect()
-  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-  error = " "
-  if request.method == 'POST':
-    password = session['password']
-    oldP = request.form['oldpassword']
-    newPass = request.form['password']
-    email = session['username']
-    level = session['Status']
+   db = utils.db_connect()
+   cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+   error = " "
+   if request.method == 'POST':
+     password = session['password']
+     oldP = request.form['oldpassword']
+     newPass = request.form['password']
+     email = session['username']
+     level = session['Status']
     
-    #password = password.toString()
-    #oldP = oldP.toString()
+     password = unicodedata.normalize('NFKD', password).encode('ascii','ignore')
+     oldP = unicodedata.normalize('NFKD', oldP).encode('ascii','ignore')
+     newPass = unicodedata.normalize('NFKD', newPass).encode('ascii','ignore')
+     print "PASSWORD = " + password
+     print "OLD P = " + oldP
+     print "NEW P = " + newPass
     
-    password = unicodedata.normalize('NFKD', password).encode('ascii','ignore')
-    oldP = unicodedata.normalize('NFKD', oldP).encode('ascii','ignore')
-    newPass = unicodedata.normalize('NFKD', newPass).encode('ascii','ignore')
-    print "PASSWORD = " + password
-    print "OLD P = " + oldP
-    print "NEW P = " + newPass
-    
-    error = "notSame"
-    #print "IF OLDP"
-    if oldP == password:
-      print "IF OLDP"
-      if level != "admin":
-        query = "UPDATE users SET password = '%s' WHERE email = '%s'" % (newPass, email)
-        print "Level = " + level
-        cur.execute(query)
-        db.commit()
-        error = "password"
+     error = "notSame"
+     #print "IF OLDP"
+     if oldP == password:
+       print "IF OLDP"
+       if level != "admin":
+         query = "UPDATE users SET password = '%s' WHERE email = '%s'" % (newPass, email)
+         print "Level = " + level
+         cur.execute(query)
+         db.commit()
+         error = "password"
   
-      elif level == "admin":
-        print "IF ADMIN"
-        firstname = request.form['firstName']
-        lastname = request.form['lastName']
-        newEmail = request.form['email']
-        query = "UPDATE users SET firstname = '%s', lastname = '%s', email = '%s', password = '%s' WHERE email = '%s'" % (firstname, lastname, newEmail, newPass, email)
-        cur.execute(query)
-        db.commit()
-        error = "new"
-
-    
-  return render_template('edit.html', errors=error)
+       elif level == "admin":
+         firstname = request.form['firstName']
+         lastname = request.form['lastName']
+         newEmail = request.form['email']
+         query = "UPDATE users SET firstname = '%s', lastname = '%s', email = '%s', password = '%s' WHERE email = '%s'" % (firstname, lastname, newEmail, newPass, email)
+         cur.execute(query)
+         db.commit()
+         error = "new"
+     session['password'] = newPass
+   return render_template('edit.html', errors=error)
 
 @app.route('/createTutor', methods=['GET', 'POST'])
 def createTutor():
@@ -142,6 +138,7 @@ def delete():
 def login():
     db = utils.db_connect()
     cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+    error = ""
     if request.method == 'POST':
       print "yay"
       row = []
@@ -160,27 +157,47 @@ def login():
         session['logged_in'] = "yes"
         print "redirect"
         return redirect(url_for('index'))
-    return render_template('login.html')
+      else:
+        error = "true"
+        print "error"
+    return render_template('login.html', error=error)
 
 @app.route('/register', methods=['GET','POST'])
 def register():
   db = utils.db_connect()
   cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  errorMail = ""
+  errorFirst = ""
+  errorLast = ""
+  errorPass = ""
+  error = ""
   if request.method == 'POST':
     firstname=request.form['firstname']
     lastname=request.form['lastname']
     email=request.form['email']
     password=request.form['password']
     print firstname + " " + lastname + " " + email + " " + password
-    if "umw.edu" in email:
+    if "mail.umw.edu" in email and firstname and lastname and password:
       query = "INSERT INTO users (firstname,lastname,email,password,accountStatus) VALUES('%s','%s','%s','%s',3);" % (firstname,lastname,email,password)
       print query
       cur.execute(query)
       db.commit()
       return redirect(url_for('login'))
     else:
-      return redirect(url_for('register'))
-  return render_template('register.html')
+      error = "true"
+      if "mail.umw.edu" not in email or not email:
+        errorMail = "true"
+        print "nomail"
+      if not firstname:
+        errorFirst = "true"
+        print "Noname"
+      if not lastname:
+        errorLast = "true"
+        print "noname2"
+      if not password:
+        errorPass = "true"
+        print "nopass"
+  return render_template('register.html', errorMail=errorMail, errorFirst=errorFirst, errorLast=errorLast, errorPass=errorPass, error=error)
 
 @app.route('/AdminDash')
 def AdminDash():
@@ -285,44 +302,65 @@ def appointment4():
 def booking():
   return render_template('booked.html')
 
-
-
-@app.route('/search')
+@app.route('/search', methods=['GET', 'POST'])
 def search():
-  return render_template('search.html', selectedMenu='search')
-
-@app.route('/search2')
-def search2():
-  if (searchbyname != False):
-    stuff = {'firstname': request.form['firstname'],
-          'lastname': request.form['lastname']}
-  
-    db = utils.db_connect()
-    cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-  
-    query = "SELECT firstname, lastname, courses FROM tutors WHERE firstname LIKE " + stuff[0] + " OR lastname LIKE " + stuff[1] + ";"
-    cur.execute(query)
-    db.commit()
-    results = cur.fetchall()
-    print results
-  else: #Search by course
-    stuff = {'Subject': request.form['Subject'],
-              'CourseNum': request.form['CourseNum']}
-    
-    db = utils.db_connect()
-    cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-    query = "SELECT firstname, lastname FROM classes WHERE Subject LIKE " + stuff[0] + " OR CourseNum LIKE " + stuff[1] + ";"
-    cur.execute(query)
-    db.commit()
-    results = cur.fetchall()
-    print results
-    
-    
-  
-  
-  return render_template('search2.html', stuff = stuff)
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  stuff = ""
+  results = ""
+  queryType = ""
+  print request.method
+  if request.method == 'POST':
+    queryType = "yes"
+    firstname = request.form['firstname']
+    lastname = request.form['lastname']
+    subject = request.form['Subject']
+    course = request.form['CourseNum']
+    print firstname + lastname + course
+    if firstname and lastname and not course:
+      print "IM HERE!!!!"
+      query = "SELECT firstname, lastname, classes FROM users WHERE firstname LIKE '" + firstname + "' AND lastname LIKE '" + lastname + "' AND accountStatus = 2 AND classes LIKE '%" + subject + "%';"
+      cur.execute(query)
+      results = cur.fetchall()
+      db.commit()
+    elif (firstname or lastname) and not course:
+      print "apples"
+      query = "SELECT firstname, lastname, classes FROM users WHERE (firstname LIKE '" + firstname + "' OR lastname LIKE '" + lastname + "') AND accountStatus = 2 AND classes LIKE '%" + subject + "%';"
+      print query
+      cur.execute(query)
+      results = cur.fetchall()
+      db.commit()
+      print results
+    elif firstname and lastname and course:
+      print "DERPPPPP"
+      query = "SELECT firstname, lastname, classes FROM users WHERE firstname LIKE '" + firstname + "' AND lastname LIKE '" + lastname + "' AND accountStatus = 2 AND classes LIKE '%" + subject + "-" + course + "%';"
+      print query
+      cur.execute(query)
+      results = cur.fetchall()
+      db.commit()
+    elif (firstname or lastname) and course:
+      print "AJwlekfjSKj"
+      query = "SELECT firstname, lastname, classes FROM users WHERE (firstname LIKE '" + firstname + "' OR lastname LIKE '" + lastname + "') AND accountStatus = 2 AND classes LIKE '%" + subject + "-" + course + "%';"
+      print query
+      cur.execute(query)
+      results = cur.fetchall()
+      db.commit()
+    elif not firstname and not lastname: #Search by course
+      if subject and not course:
+        query = "SELECT firstname, lastname, classes FROM users WHERE classes LIKE '%" + subject + "%';"
+        cur.execute(query)
+        results = cur.fetchall()
+        db.commit()
+        print results
+      elif subject and course:
+        query = "SELECT firstname, lastname FROM users WHERE classes LIKE '%" + subject + "-" + course + "%';"
+        cur.execute(query)
+        results = cur.fetchall()
+        db.commit()
+        print results
+  return render_template('search.html', stuff = stuff, selectedMenu='search', results=results, queryType=queryType)
   
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=8080, debug=True)
+  app.run(host='0.0.0.0', port=3000, debug=True)
 

@@ -2,7 +2,7 @@
 
 {% block content %}
         <h1>Find a Tutor</h1>
-<form method = "GET" action = "/report2">
+<form method = "POST">
 					<table>
 						
 					<tr><td>First Name</td><td><input type="text" id="firstname" name="firstname" /></td></tr>
@@ -11,7 +11,7 @@
 					
 					
 					<tr><td>Major of Study</td>
-					<select name="Subject">
+					<td><select name="Subject">
 					<option>ACCT</option>
 					<option>AMST</option>
 					<option>ANTH</option>
@@ -67,6 +67,17 @@
 
 					<tr><td>&nbsp;</td><td><input type="submit" value="Find Tutor" /></td></tr>
 					</table>
+  
+          {% if queryType=='yes' %}
+    <table>
+      <tr><th>First name</th><th>Last name</th><th>Courses</th></tr>
+      {% for results in results %}
+      <tr><td>{{results['firstname']}}</td><td>{{results['lastname']}}</td><td>{{results['classes']}}</td></tr>
+      {% endfor %}
+    
+    </table>
+<br><br>
+  {% endif %}
 					
 					</form>
 {% endblock %}
