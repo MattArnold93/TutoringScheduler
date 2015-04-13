@@ -41,9 +41,6 @@ def edit():
     email = session['username']
     level = session['Status']
     
-    #password = password.toString()
-    #oldP = oldP.toString()
-    
     password = unicodedata.normalize('NFKD', password).encode('ascii','ignore')
     oldP = unicodedata.normalize('NFKD', oldP).encode('ascii','ignore')
     newPass = unicodedata.normalize('NFKD', newPass).encode('ascii','ignore')
@@ -63,7 +60,6 @@ def edit():
         error = "password"
   
       elif level == "admin":
-        print "IF ADMIN"
         firstname = request.form['firstName']
         lastname = request.form['lastName']
         newEmail = request.form['email']
@@ -71,7 +67,7 @@ def edit():
         cur.execute(query)
         db.commit()
         error = "new"
-
+    session['password'] = newPass
     
   return render_template('edit.html', errors=error)
 
@@ -331,7 +327,7 @@ def search():
       print "meeee"
       subject = request.form['Subject']
       course = request.form['CourseNum']
-      query = "SELECT 
+      query = "SELECT" 
       cur.execute(query)
       results = cur.fetchall()
       db.commit()
@@ -340,5 +336,5 @@ def search():
   
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=3000, debug=True)
+  app.run(host='0.0.0.0', port=8080, debug=True)
 
