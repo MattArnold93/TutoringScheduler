@@ -308,6 +308,13 @@ def appointment3():
 def search():
   db = utils.db_connect()
   cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  adminName = ""
+  adminQuery = "SELECT * FROM users WHERE accountStatus = 1;"
+  cur.execute(adminQuery)
+  row = cur.fetchone()
+  fname = row['firstname']
+  lname = row['lastname']
+  username = fname + " " + lname
   stuff = ""
   results = ""
   queryType = ""
@@ -360,9 +367,9 @@ def search():
         results = cur.fetchall()
         db.commit()
         print results
-  return render_template('search.html', stuff = stuff, selectedMenu='search', results=results, queryType=queryType)
+  return render_template('search.html', stuff = stuff, selectedMenu='search', results=results, queryType=queryType, adminName=username)
   
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=3000, debug=True)
+  app.run(host='0.0.0.0', port=8080, debug=True)
 
