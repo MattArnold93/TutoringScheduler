@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS appointments
 (
 	numId INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (numId),
-	/*datenum DATE(20) NOT NULL,
-	appointmenttime TIME(30) NOT NULL,*/
+    datenum int(20) NOT NULL,
+	appointmenttime int(30) NOT NULL,
 	class varchar(15) NOT NULL,
 	studentId int(100) NOT NULL,
 	tutorId int(100) NOT NULL,
@@ -52,7 +52,6 @@ INSERT INTO classes (class, subject) VALUES ("FREN-331", "FREN");
 CREATE TABLE IF NOT EXISTS times
 (
 	studentId INT NOT NULL,
-	/*PRIMARY KEY (studentId)*/
 	classes varchar (400) NOT NULL,
 	dayofweek varchar (10) NOT NULL,
 	hourof varchar (10) NOT NULL,
