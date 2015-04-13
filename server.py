@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, datetime
 import MySQLdb, utils, os, unicodedata
 
 app = Flask(__name__)
@@ -243,65 +243,64 @@ def appointment2():
 @app.route('/appoint3', methods=['GET', 'POST'])
 def appointment3():
   selClass = request.form['class']
-  selType = request.form['schedule']
   db = utils.db_connect()
   cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
   fullDict = []
   results = []
-  #query = "SELECT numId, classes FROM users;"
-  #cur.execute(query)
-  #db.commit() 
-  #users = cur.fetchall()
-  #length = len(users)
-  #for y in range(0,length):
-   # dict1 = users[y]
-    #classes = dict1['classes']
-    #if classes == None:
-     # continue
-    #if selClass in classes:
-     # print "found 1"
-    #else:
-     # continue
 
-
-  
-
-  if selType == "Tutor":
-   # query = "SELECT numId, classes FROM users WHERE INNER JOIN times ON users.numId=times.studentId"
-   print "stuff"
-  else:
-    query = "SELECT studentId, classes, dayofweek, hourof FROM times"
-    cur.execute(query)
-    db.commit()
-    usrTimes = cur.fetchall()
-    print usrTimes
-    length = len(usrTimes)
-    for y in range(0, length):
-      dict1 = usrTimes[y]
-      classes = dict1['classes']
-      if classes == None:
-        continue
-      if selClass in classes:
-        fullDict.append(dict1)
-      else:
-        continue
-    results = fullDict
-    for item in results:
-      if item['dayofweek'] == "Monday":
-        print "fun"
-      elif item['dayofweek'] == "Tuesday":
-        print "not fun"
-      elif item['dayofweek'] == "Wednesday":
-        print "bafds"
-      else:
-        print "sdgsdddddss"
+  query = "SELECT studentId, classes, dayofweek, hourof FROM times"
+  cur.execute(query)
+  db.commit()
+  usrTimes = cur.fetchall()
+  print usrTimes
+  length = len(usrTimes)
+  for y in range(0, length):
+    dict1 = usrTimes[y]
+    classes = dict1['classes']
+    if classes == None:
+      continue
+    if selClass in classes:
+      fullDict.append(dict1)
+    else:
+      continue
+  results = fullDict
+  for item in results:
+    if item['dayofweek'] == "Monday":
+      print "fun"
+    elif item['dayofweek'] == "Tuesday":
+      print "not fun"
+    elif item['dayofweek'] == "Wednesday":
+      print "bafds"
+    else:
+      print "sdgsdddddss"
   if results != []:
-    return render_template('schedule3.html', results=results)
-  else:
-    return render_template('schedule3.html')
+    print results
+    return render_template('schedule3.html', results=results, selClass=selClass)
 
-#@app.route('/appoint4', methods=['GET', 'POST'])
-#def appointment4():
+@app.route('/appoint4', methods=['GET', 'POST'])
+def appointment4():
+  selClass=request.args.get('selClass')
+  dayofweek=request.args.get('dayofweek')
+  studentId=request.args.get('studentId')
+  hourof=request.args.get('hourof')
+
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  query = "SELECT firstname, lastname FROM users WHERE numId=\'"+studentId+"\'"
+  cur.execute(query)
+  db.commit()
+
+  tutor = cur.fetchone()
+
+  tutorFirst = tutor['firstname']
+  tutorLast = tutor['lastname']
+  results = {'class':selClass, 'dayofweek':dayofweek, 'tutorFirst':tutorFirst, 'tutorLast':tutorLast, 'hourof':hourof}
+  
+  return render_template('schedule4.html', results=results)
+
+@app.route('/bookapp', methods=['GET','POST'])
+def booking():
+  return render_template('booked.html')
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():

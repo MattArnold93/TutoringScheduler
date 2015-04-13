@@ -10,39 +10,38 @@
 		<th> Thursday </th>
 		<th> Friday </th>
 	</tr>
-	<form method="post" action="/appoint4">
 	{% for thing in results %}
 	<tr>
 		{% if thing['dayofweek'] == 'Monday' %}
-		<td class='mon'>{{thing['hourof']}}</td>
+		<td class='mon'><a href={{url_for('appointment4', dayofweek=thing['dayofweek'], hourof=thing['hourof'], studentId=thing['studentId'], selClass=selClass)}}>{{thing['hourof']}}</a></td> 
 		<td> </td>
 		<td> </td>
 		<td> </td>
 		<td> </td>
 		{% elif thing['dayofweek'] == 'Tuesday' %}
 		<td> </td>
-		<td class='tues'> {{thing['hourof']}} </td>
+		<td class='tues'><a href={{url_for('appointment4', dayofweek=thing['dayofweek'], hourof=thing['hourof'], studentId=thing['studentId'], selClass=selClass)}}>{{thing['hourof']}}</a></td>
 		<td> </td>
 		<td> </td>
 		<td> </td>
 		{% elif thing['dayofweek'] == 'Wednesday' %}
 		<td> </td>
 		<td> </td>
-		<td> {{thing['hourof']}} </td>
+		<td><a href={{url_for('appointment4', dayofweek=thing['dayofweek'], hourof=thing['hourof'], studentId=thing['studentId'], selClass=selClass)}}>{{thing['hourof']}}</a></td>
 		<td> </td>
 		<td> </td>
 		{% elif thing['dayofweek'] == 'Thursday' %}
 		<td> </td>
 		<td> </td>
 		<td> </td>
-		<td> {{thing['hourof']}} </td>
+		<td><a href={{url_for('appointment4', dayofweek=thing['dayofweek'], hourof=thing['hourof'], studentId=thing['studentId'], selClass=selClass)}}>{{thing['hourof']}}</a></td>
 		<td> </td>
 		{% else %}
 		<td> </td>
 		<td> </td>
 		<td> </td>
 		<td> </td>
-		<td> {{thing['hourof']}} </td>
+		<td><a href={{url_for('appointment4', dayofweek=thing['dayofweek'], hourof=thing['hourof'], studentId=thing['studentId'], selClass=selClass)}}>{{thing['hourof']}}</a></td>
 		{% endif %}
 	</tr>
 	{% endfor %}
