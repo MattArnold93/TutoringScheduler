@@ -28,49 +28,49 @@ def logout():
   session.pop('username', None)
   session.pop('password', None)
   session.pop('Status', None)
+  session.pop('logged_in', None)
   return redirect(url_for('login'))
 
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
-  db = utils.db_connect()
-  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-  error = " "
-  if request.method == 'POST':
-    password = session['password']
-    oldP = request.form['oldpassword']
-    newPass = request.form['password']
-    email = session['username']
-    level = session['Status']
+   db = utils.db_connect()
+   cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+   error = " "
+   if request.method == 'POST':
+     password = session['password']
+     oldP = request.form['oldpassword']
+     newPass = request.form['password']
+     email = session['username']
+     level = session['Status']
     
-    password = unicodedata.normalize('NFKD', password).encode('ascii','ignore')
-    oldP = unicodedata.normalize('NFKD', oldP).encode('ascii','ignore')
-    newPass = unicodedata.normalize('NFKD', newPass).encode('ascii','ignore')
-    print "PASSWORD = " + password
-    print "OLD P = " + oldP
-    print "NEW P = " + newPass
+     password = unicodedata.normalize('NFKD', password).encode('ascii','ignore')
+     oldP = unicodedata.normalize('NFKD', oldP).encode('ascii','ignore')
+     newPass = unicodedata.normalize('NFKD', newPass).encode('ascii','ignore')
+     print "PASSWORD = " + password
+     print "OLD P = " + oldP
+     print "NEW P = " + newPass
     
-    error = "notSame"
-    #print "IF OLDP"
-    if oldP == password:
-      print "IF OLDP"
-      if level != "admin":
-        query = "UPDATE users SET password = '%s' WHERE email = '%s'" % (newPass, email)
-        print "Level = " + level
-        cur.execute(query)
-        db.commit()
-        error = "password"
+     error = "notSame"
+     #print "IF OLDP"
+     if oldP == password:
+       print "IF OLDP"
+       if level != "admin":
+         query = "UPDATE users SET password = '%s' WHERE email = '%s'" % (newPass, email)
+         print "Level = " + level
+         cur.execute(query)
+         db.commit()
+         error = "password"
   
-      elif level == "admin":
-        firstname = request.form['firstName']
-        lastname = request.form['lastName']
-        newEmail = request.form['email']
-        query = "UPDATE users SET firstname = '%s', lastname = '%s', email = '%s', password = '%s' WHERE email = '%s'" % (firstname, lastname, newEmail, newPass, email)
-        cur.execute(query)
-        db.commit()
-        error = "new"
-    session['password'] = newPass
-    
-  return render_template('edit.html', errors=error)
+       elif level == "admin":
+         firstname = request.form['firstName']
+         lastname = request.form['lastName']
+         newEmail = request.form['email']
+         query = "UPDATE users SET firstname = '%s', lastname = '%s', email = '%s', password = '%s' WHERE email = '%s'" % (firstname, lastname, newEmail, newPass, email)
+         cur.execute(query)
+         db.commit()
+         error = "new"
+     session['password'] = newPass
+   return render_template('edit.html', errors=error)
 
 @app.route('/createTutor', methods=['GET', 'POST'])
 def createTutor():
@@ -316,26 +316,53 @@ def search():
     queryType = "yes"
     firstname = request.form['firstname']
     lastname = request.form['lastname']
-    print "DOOO"
-    if firstname or lastname:
+    subject = request.form['Subject']
+    course = request.form['CourseNum']
+    print firstname + lastname + course
+    if firstname and lastname and not course:
+      print "IM HERE!!!!"
+      query = "SELECT firstname, lastname, classes FROM users WHERE firstname LIKE '" + firstname + "' AND lastname LIKE '" + lastname + "' AND accountStatus = 2 AND classes LIKE '%" + subject + "%';"
+      cur.execute(query)
+      results = cur.fetchall()
+      db.commit()
+    elif (firstname or lastname) and not course:
       print "apples"
-      query = "SELECT firstname, lastname, courses FROM tutors WHERE firstname LIKE '" + firstname + "' OR lastname LIKE '" + lastname + "';"
+      query = "SELECT firstname, lastname, classes FROM users WHERE (firstname LIKE '" + firstname + "' OR lastname LIKE '" + lastname + "') AND accountStatus = 2 AND classes LIKE '%" + subject + "%';"
       print query
       cur.execute(query)
       results = cur.fetchall()
       db.commit()
-    else: #Search by course
-      print "meeee"
-      subject = request.form['Subject']
-      course = request.form['CourseNum']
-      query = "SELECT" 
+      print results
+    elif firstname and lastname and course:
+      print "DERPPPPP"
+      query = "SELECT firstname, lastname, classes FROM users WHERE firstname LIKE '" + firstname + "' AND lastname LIKE '" + lastname + "' AND accountStatus = 2 AND classes LIKE '%" + subject + "-" + course + "%';"
+      print query
       cur.execute(query)
       results = cur.fetchall()
       db.commit()
-      print results
+    elif (firstname or lastname) and course:
+      print "AJwlekfjSKj"
+      query = "SELECT firstname, lastname, classes FROM users WHERE (firstname LIKE '" + firstname + "' OR lastname LIKE '" + lastname + "') AND accountStatus = 2 AND classes LIKE '%" + subject + "-" + course + "%';"
+      print query
+      cur.execute(query)
+      results = cur.fetchall()
+      db.commit()
+    elif not firstname and not lastname: #Search by course
+      if subject and not course:
+        query = "SELECT firstname, lastname, classes FROM users WHERE classes LIKE '%" + subject + "%';"
+        cur.execute(query)
+        results = cur.fetchall()
+        db.commit()
+        print results
+      elif subject and course:
+        query = "SELECT firstname, lastname FROM users WHERE classes LIKE '%" + subject + "-" + course + "%';"
+        cur.execute(query)
+        results = cur.fetchall()
+        db.commit()
+        print results
   return render_template('search.html', stuff = stuff, selectedMenu='search', results=results, queryType=queryType)
   
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=8080, debug=True)
+  app.run(host='0.0.0.0', port=3000, debug=True)
 

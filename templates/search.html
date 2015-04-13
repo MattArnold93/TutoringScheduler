@@ -70,10 +70,9 @@
   
           {% if queryType=='yes' %}
     <table>
-      <tr><th>First name</th><th>Last name</th><th>Action</th><th>Target</th><th>Alignment</th><th>Description</th><th>Link</th></tr>
-      {% for result in results %}
-      <tr><td>{{results['ID']}}</td><td>{{results['Name']}}</td><td>{{results['Action']}}</td><td>{{results['Target']}}</td>
-        <td>{{results['Alignment']}}</td><td>{{results['Description']}}</td></tr>
+      <tr><th>First name</th><th>Last name</th><th>Courses</th></tr>
+      {% for results in results %}
+      <tr><td>{{results['firstname']}}</td><td>{{results['lastname']}}</td><td>{{results['classes']}}</td></tr>
       {% endfor %}
     
     </table>
