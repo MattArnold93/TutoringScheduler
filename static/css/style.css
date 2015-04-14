@@ -7,8 +7,7 @@ html
 
 body
 { font: normal .80em trebuchet ms, sans-serif;
-  background: #EEE;
-  color: #0066CC;}
+  background-color: #00305E;}
 
 p
 { padding: 0 0 20px 0;
@@ -19,7 +18,7 @@ img
 
 h1, h2, h3, h4, h5, h6 
 { font: normal 165% 'century gothic', arial, sans-serif;
-  color: #2DB8CD;
+  color: #3F454F;
   margin: 0 0 14px 0;
   padding: 10px 0 5px 0;}
 
@@ -94,7 +93,7 @@ ol li
 { padding-bottom: 20px;}
 
 #header
-{ background: transparent;
+{ background: #00305E;
   height: 170px;}
 
 #logo
@@ -148,9 +147,9 @@ ul#menu li a
   height: 20px;
   padding: 6px 20px 5px 20px;
   text-align: center;
-  color: #000;
+  color: #FFFFFF;
   text-decoration: none;
-  background: #E0E0E0;} 
+  background: #3F454F;} 
 
 ul#menu li.selected a, ul#menu li.selected a:hover
 { background: #FFF;
@@ -164,7 +163,7 @@ ul#menu li a:hover
   overflow: hidden;
   margin: 0 auto 0 auto;
   padding: 10px 20px 20px 20px;
-  background: #F6F6F0 url(back.png) repeat-y;
+  background: #FFFFFF url(back.png) repeat-y;
   border: 15px solid #FFF;} 
 
 .sidebar
@@ -184,10 +183,10 @@ ul#menu li a:hover
 .sidebar li a, .sidebar li a:hover
 { padding: 0 0 0 25px;
   display: block;
-  background: transparent url(link.png) no-repeat left center;} 
+  background:  #00305E url(link.png) no-repeat left center;} 
 
 .sidebar li a.selected
-{ color: #444;
+{ color: #00305E;
   text-decoration: none;} 
 
 #content
@@ -202,8 +201,8 @@ ul#menu li a:hover
   height: 28px;
   padding: 20px 0 5px 0;
   text-align: center; 
-  background: transparent;
-  color: #111;
+  background: #00305E;
+  color:  #00305E;
   text-transform: uppercase;
   letter-spacing: 0.1em;}
 
@@ -239,7 +238,7 @@ ul#menu li a:hover
 { padding: 5px; 
   width: 299px; 
   font: 100% arial; 
-  border: 1px solid #E5E5DB; 
+  border: 1px solid #3F454F; 
   background: #FFF; 
   color: #47433F;}
   
