@@ -23,21 +23,26 @@ h1, h2, h3, h4, h5, h6
   padding: 10px 0 5px 0;}
 
 h2
-{ font: normal 165% 'century gothic', arial, sans-serif;
-  color: #B60000;}
+{ font: normal 140% 'century gothic', arial, sans-serif;
+  color: #3F454F;}
 
 h3
-{ font: normal 165% 'century gothic', arial, sans-serif;}
+{ font: normal 120% 'century gothic', arial, sans-serif;
+  color: #3F454F;}
 
-h4, h5, h6
+h4
+{ font: normal 100% 'century gothic', arial, sans-serif;
+  color: #D60D0D;}
+
+h5
+{ font: normal 90% 'century gothic', arial, sans-serif;
+  color: #3F454F;}
+  
+h6
 { margin: 0;
   padding: 0 0 5px 0;
   font: normal 120% arial, sans-serif;
   color: #B60000;}
-
-h5, h6
-{ font: italic 95% arial, sans-serif;
-  color: #888;}
 
 h6
 { color: #362C20;}

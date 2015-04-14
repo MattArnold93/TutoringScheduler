@@ -6,15 +6,15 @@
   
   <div class = "articleContent">
     {% if exists == "yes" %}
-    <p>Account has been deleted</p>
+    <h3>Account has been deleted</h3>
     <br>
     <br>
     {% elif exists == "no" %}
-    <p>Account does not exist</p>
+    <h4>Account does not exist</h4>
     <br>
     <br>
     {% elif exists == "admin" %}
-    <p>Cannot delete an Admin account</p>
+    <h4>Cannot delete an Admin account</h4>
     <br>
     <br>
     {% endif %}

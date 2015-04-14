@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <h1>Edit the appointment</h1>
+    {% if done == "done" %}
+        <h3>You have sucessfully edited the appointment.</h3>
+    {% endif %}
+    <h2>The current appointment is on {{day}} at {{time}} with {{sname}} in {{sub}}.</p></h2>
+        <form method="post">
+            <h3>Day of the week: <select name="newDay">
+				<option>Monday</option>
+				<option>Tuesday</option>
+				<option>Wednesday</option>
+				<option>Thursday</option>
+				<option>Friday</option>
+				<option>Saturday</option>
+				<option>Sunday</option>
+			</select></h5>
+            <h3>Time: <select name="newTime">
+				<option>1</option>
+				<option>2</option>
+				<option>3</option>
+				<option>4</option>
+				<option>5</option>
+				<option>6</option>
+				<option>7</option>
+				<option>8</option>
+				<option>9</option>
+				<option>10</option>
+				<option>11</option>
+				<option>12</option>
+			</select></h3>
+			<h3><input type="radio" name="part" value="AM"> AM   
+            <input type="radio" name="part" value="PM"> PM
+            </h3></br></br><input type="submit" name="submit" value="Edit" />
+
+{% endblock %}

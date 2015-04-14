@@ -2,12 +2,22 @@
 
 {% block content %}
         <h1>Welcome {{Fullname}}</h1>
-    {% if results == 'Nothing' %}
-        <p>You have no appointments scheduled.</p>
-    {% else %}
-        {% for thing in results %}
-			<p>You have an appointment on {{thing['datenum']}} at {{thing['apptime']}} in {{thing['class']}}</p>
-		{% endfor %}
-	{% endif %}			
+    {% if session['Status'] == "tutor" %}
+    	{% if tresults == 'Nothing' %}
+        	<h3>You have no appointments scheduled.</h3>
+   		{% else %}
+			{% for thing in tresults %}
+		   		<h3>You have an appointment on {{thing['datenum']}} at {{thing['apptime']}} in {{thing['class']}}.  <a href={{url_for('editAppointment', numId=thing['numId'], datenum=thing['datenum'], apptime=thing['apptime'], class=thing['class'])}}>Edit</a></h3>
+			{% endfor %}
+		{% endif %}
+    {% elif session['Status'] == "student" %}
+    	{% if sresults == 'Nothing' %}
+    		<h3>You have no appointments scheduled.</h3>
+    	{% else %}
+	        {% for thing in sresults %}
+		    	<h3>You have an appointment on {{thing['datenum']}} at {{thing['apptime']}} in the class {{thing['class']}}.</h3>
+		    {% endfor %}
+	    {% endif %}
+	{% endif %}
 	</form>
 {% endblock %}

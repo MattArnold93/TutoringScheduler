@@ -6,27 +6,27 @@
   
   <div class = "articleContent">
     {% if errors == "new" %}
-    <p>Administrator Account has be updated.</p>
+    <h3>Administrator Account has be updated.</h3>
     <br>
     <br>
     {% elif errors == "password" %}
-    <p>Your password has been updated.</p>
+    <h3>Your password has been updated.</h3>
     <br>
     <br>
     {% elif errors == "notSame" %}
-    <p>Your old passwords did not match. Unable to update.</p>
+    <h4>Your old passwords did not match. Unable to update.</h4>
     <br>
     <br>
     {% endif %}
             <form method="post">
                 {% if session['Status'] == "admin" %}
-                <p>First Name: <input name="firstName" type="text" id="firstName" placeholder="First Name" maxlength="96"/></p>
-                <p>Last Name: <input name="lastName" type="text" id="lastName" placeholder="Last Name" maxlength="96"/></p>
-                <p>Email: <input name="email" type="text" id="email" placeholder="Email" maxlength="96"/></p>
+                <h2>First Name: <input name="firstName" type="text" id="firstName" placeholder="First Name" maxlength="96"/></h2>
+                <h2>Last Name: <input name="lastName" type="text" id="lastName" placeholder="Last Name" maxlength="96"/></h2>
+                <h2>Email: <input name="email" type="text" id="email" placeholder="Email" maxlength="96"/></h2>
                 {% endif %}
                 {% if session['Status'] == "admin" or session['Status'] == "student" or session['Status'] == "tutor" %}
-                <p>Old Password: <input name="oldpassword" type="password" id="oldpassword" maxlength="64"/></p>
-                <p>New Password: <input name="password" type="password" id="password" maxlength="64"/></p><br/>
+                <h2>Old Password: <input name="oldpassword" type="password" id="oldpassword" maxlength="64"/></h2>
+                <h2>New Password: <input name="password" type="password" id="password" maxlength="64"/></h2><br/>
                 <input type="submit" name="submit" value="Edit" />
                 {% endif %}
    

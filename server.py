@@ -4,6 +4,42 @@ import MySQLdb, utils, os, unicodedata, datetime
 app = Flask(__name__)
 app.secret_key = os.urandom(24).encode('hex')
 
+@app.route('/editAppointment', methods=['GET', 'POST'])
+def editAppointment():
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  apptime=request.args.get('apptime')
+  numId=request.args.get('numId')
+  datenum=request.args.get('datenum')
+  subject=request.args.get('class')
+
+  appquery = "SELECT studentId FROM appointments WHERE numId = '%s'" % (numId)
+  cur.execute(appquery)
+  app = cur.fetchone()
+  sId = app['studentId']
+  query = "SELECT firstname, lastname FROM users WHERE numId = '%s'" % (sId)
+  cur.execute(query)
+  student = cur.fetchone()
+  fname=student['firstname']
+  lname=student['lastname']
+  name=fname + " " + lname
+  sname=" "
+  d= " "
+  if request.method == 'POST':
+    newTime = request.form['newTime']
+    newDay = request.form['newDay']
+    part = request.form['part']
+    
+    upTime = newTime + part
+    
+    updatequery = "UPDATE appointments SET apptime = '%s', datenum = '%s' WHERE numId = '%s'" % (upTime, newDay, numId)
+    cur.execute(updatequery)
+    db.commit()
+    d="done"
+    datenum = newDay
+    apptime = upTime
+  return render_template('editAppointment.html',numId=numId, day=datenum, time=apptime, sub=subject, sname=name, done=d)
+
 @app.route('/index')
 def index():
   db = utils.db_connect()
@@ -16,11 +52,16 @@ def index():
   fname = user['firstname']
   lname = user['lastname']
   name = fname + " " + lname
-  searchQuery = "SELECT class, datenum, apptime, tutorId FROM appointments WHERE studentId='%s'" % (userID)
+  searchQuery = "SELECT class, numId, datenum, apptime, tutorId FROM appointments WHERE studentId='%s'" % (userID)
   cur.execute(searchQuery)
-  result = cur.fetchall()
-  if not result:
-    result = "Nothing"
+  sresult = cur.fetchall()
+  if not sresult:
+    sresult = "Nothing"
+  searchQuery2 = "SELECT class, numId, datenum, apptime, studentId FROM appointments WHERE tutorId='%s'" % (userID)
+  cur.execute(searchQuery2)
+  tresult = cur.fetchall()
+  if not tresult:
+    tresult = "Nothing"
   queryStat = "SELECT accountStatus FROM users WHERE email = '" + session['username'] + "' AND password = '" + session['password'] + "';"
   cur.execute(queryStat)
   row = cur.fetchone()
@@ -31,7 +72,7 @@ def index():
     session['Status'] = "tutor"
   elif row['accountStatus'] == 3:
     session['Status'] = "student"
-  return render_template('index.html', row=row, Fullname=name, results=result)
+  return render_template('index.html', row=row, Fullname=name, sresults=sresult, tresults=tresult)
 
 @app.route('/logout')
 def logout():
@@ -175,7 +216,7 @@ def register():
       return redirect(url_for('login'))
     else:
       error = "true"
-      if "mail.umw.edu" not in email or not email:
+      if "mail.umw.edu" or "umw.edu" not in email or not email:
         errorMail = "true"
       if not firstname:
         errorFirst = "true"
@@ -232,7 +273,7 @@ def appointment3():
   fullDict = []
   results = []
 
-  query = "SELECT studentId, classes, dayofweek, hourof FROM times"
+  query = "SELECT studentId, classes, dayofweek, hourof FROM times" # ORDERBY dayofweek"
   cur.execute(query)
   db.commit()
   usrTimes = cur.fetchall()
@@ -274,7 +315,7 @@ def appointment4():
 
   db = utils.db_connect()
   cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-  query = "SELECT firstname, lastname FROM users WHERE numId=\'"+studentId+"\'"
+  query = "SELECT firstname, lastname FROM users WHERE numId=\'"+studentId+"\'" # ORDERBY dayofweek"
   cur.execute(query)
   db.commit()
 

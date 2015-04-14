@@ -6,15 +6,15 @@
   
   <div class = "articleContent">
     {% if created == "yes" %}
-    <p>Congratulations! You've created a tutor!</p>
+    <h3>Congratulations! You've created a tutor!</h3>
     {% elif created == "no" %}
-    <p>Error! Account is already made as tutor!</p>
+    <h4>Error! Account is already made as tutor!</h4>
     {% elif created == "updated" %}
-    <p>Account already made. Updated to Tutor.</p>
+    <h4>Account already made. Updated to Tutor.</h4>
     {% elif created == "admin" %}
-    <p>Error! Account is admin!</p>
+    <h4>Error! Account is administrator!</h4>
     {% endif %}
-    <p>NOTE: When adding courses, seperate them by commas, not spaces</p>
+    <h3>NOTE: When adding courses, seperate them by commas, not spaces</h3>
     <br>
             <form method="post">
                 <p>First Name: <input name="firstName" type="text" id="firstName" placeholder="First Name" maxlength="96"/></p><br/>

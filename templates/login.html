@@ -5,14 +5,14 @@
   <h1>Log-In </h1>
   
   <div class = "articleContent">
-    <p>Please Login Below</p>
+    <h2>Please Login Below</h2>
     <br>
     {% if error == "true" %}
-    <p>Error. Username or Password is incorrect. Please try again.</p>
+    <h4>Error. Username or Password is incorrect. Please try again.</h4>
     {% endif %}
      <form method="post" action="/">
-      <p>Email: <input name="email" type="text" id="email" placeholder="email" maxlength="96"/></p><br/>
-      <p>Password: <input name="password" type="password" id="password" placeholder="password" maxlength="64"/></p><br/><br/>
+      <h2>Email: <input name="email" type="text" id="email" placeholder="email" maxlength="96"/></h2><br/>
+      <h2>Password: <input name="password" type="password" id="password" placeholder="password" maxlength="64"/></h2><br/><br/>
       <input type="submit" name="submit" value="Sign In" />
    
     </form>
