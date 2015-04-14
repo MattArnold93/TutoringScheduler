@@ -11,17 +11,19 @@ def index():
   db = utils.db_connect()
   cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
   curUser = session['username']
-  query2 = "SELECT numId FROM users WHERE email = \'"+curUser+"\'"
+  query2 = "SELECT numId, firstname, lastname FROM users WHERE email = \'"+curUser+"\'"
   cur.execute(query2)
   user = cur.fetchone()
   userID = user['numId']
-  searchQuery = "SELECT class, datenum, appointmenttime, tutorId FROM appointments WHERE studentId='%s'" % (userID)
+  fname = user['firstname']
+  lname = user['lastname']
+  name = fname + " " + lname
+  searchQuery = "SELECT class, datenum, apptime, tutorId FROM appointments WHERE studentId='%s'" % (userID)
   cur.execute(searchQuery)
   result = cur.fetchall()
-  if result == None:
-    results = "Nothing"
-  if result == {}:
-    results = "Nothing"
+  if not result:
+    result = "Nothing"
+    print ("Nothing")
   queryStat = "SELECT accountStatus FROM users WHERE email = '" + session['username'] + "' AND password = '" + session['password'] + "';"
   cur.execute(queryStat)
   row = cur.fetchone()
@@ -32,10 +34,7 @@ def index():
     session['Status'] = "tutor"
   elif row['accountStatus'] == 3:
     session['Status'] = "student"
-  fname = row['firstname']
-  lname = row['lastname']
-  name = fname + " " + lname
-  return render_template('index.html', row=row, Fullname=name, results = result,)
+  return render_template('index.html', row=row, Fullname=name, results=result)
 
 @app.route('/logout')
 def logout():
