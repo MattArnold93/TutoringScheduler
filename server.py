@@ -1,9 +1,18 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from flask_mail import Mail
+from flask.ext.mail import Message, Mail
 import MySQLdb, utils, os, unicodedata, datetime
 
+MAIL_SERVER = 'smtp.gmail.com'
+MAIL_PORT = 465
+MAIL_USE_TLS = False
+MAIL_USE_SSL = True
+MAIL_USERNAME = "tutoringscheduler@gmail.com"
+MAIL_PASSWORD = "umwtutoringscheduler"
+
 app = Flask(__name__)
+app.config.from_object(__name__)
 mail = Mail(app)
+
 app.secret_key = os.urandom(24).encode('hex')
 
 @app.route('/index')
@@ -381,14 +390,14 @@ def booking():
   cur.execute(appointQuery)
   db.commit()
 
-  emailSubject = "UMW '%s' Tutoring Appointment"
-  emailToStudent = "Hi There! Your appointment for tutoring in '%s' with '%s' '%s' has been made for '%s' at '%s'. Thank you for using the UMW Tutoring Scheduler!" % (selClass, firstname, lastname, day, time)
+  emailSubject = "UMW %s Tutoring Appointment" % (selClass)
+  emailToStudent = "Hi There! Your appointment for tutoring in %s with %s %s has been made for %s at %s. Thank you for using the UMW Tutoring Scheduler!" % (selClass, firstname, lastname, day, time)
   emailToTutor = "blah"
   mail.connect()
-  studentmsg = Message(recipients=session['username'], sender="umwtutoringscheduler@umw.edu", body=emailToStudent, subject=emailSubject)
+  studentmsg = Message('Hello', sender='tutoringscheduler@gmail.com', recipients=[session['username']])
+  studentmsg.subject = emailSubject
+  studentmsg.body = emailToStudent
   mail.send(studentmsg)
-
-
 
   return render_template('booked.html')
 
