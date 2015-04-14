@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, session, datetime
-import MySQLdb, utils, os, unicodedata
+from flask import Flask, render_template, request, redirect, url_for, session
+import MySQLdb, utils, os, unicodedata, datetime
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24).encode('hex')
@@ -284,6 +284,21 @@ def appointment4():
   studentId=request.args.get('studentId')
   hourof=request.args.get('hourof')
 
+  if(dayofweek == 'Monday'):
+    dayNum = 0
+  elif(dayofweek == 'Tuesday'):
+    dayNum = 1
+  elif(dayofweek == 'Wednesday'):
+    dayNum = 2
+  elif(dayofweek == 'Thursday'):
+    dayNum = 3
+  elif(dayofweek == 'Friday'):
+    dayNum = 4
+  elif(dayofweek == 'Saturday'):
+    dayNum = 5
+  else:
+    dayNum = 6
+
   db = utils.db_connect()
   cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
   query = "SELECT firstname, lastname FROM users WHERE numId=\'"+studentId+"\'"
@@ -294,12 +309,67 @@ def appointment4():
 
   tutorFirst = tutor['firstname']
   tutorLast = tutor['lastname']
-  results = {'class':selClass, 'dayofweek':dayofweek, 'tutorFirst':tutorFirst, 'tutorLast':tutorLast, 'hourof':hourof}
+  name = tutorFirst + " " + tutorLast
+  print name
+
+  date = datetime.date.today()
+  currentDate = datetime.date.today().weekday()
+  if(currentDate <= dayNum):
+    newDateNum = dayNum - currentDate
+    d = datetime.timedelta(days=newDateNum)
+    dayofweekhour = date + d
+    nextorlast = "This"
+  else:
+    nextorlast = "Next"
+    
+  appDay = nextorlast + " " + dayofweek
+  results = {'class':selClass, 'dayofweek':dayofweek, 'nextorlast':nextorlast, 'tutorFirst':tutorFirst, 'tutorLast':tutorLast, 'hourof':hourof}
   
   return render_template('schedule4.html', results=results)
 
 @app.route('/bookapp', methods=['GET','POST'])
 def booking():
+  tutorName = request.form['name']
+  selClass = request.form['class']
+  day = request.form['dayofweek']
+  time = request.form['time']
+
+  names = tutorName.split(" ")
+  firstname = names[0]
+  lastname = names[1]
+
+  actDay = day.split(" ")
+  day = actDay[1]
+
+  curUser = session['username']
+
+  db= utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  curUserQuery = "SELECT numId FROM users WHERE email=\""+curUser+"\""
+
+  cur.execute(curUserQuery)
+  db.commit()
+
+  userIDDict = cur.fetchone()
+  userID = userIDDict['numId']
+
+  print firstname
+  print lastname
+
+  tutorQuery = "SELECT numId FROM users WHERE firstname=\""+firstname+"\" AND lastname=\"" + lastname + "\""
+
+  cur.execute(tutorQuery)
+  db.commit()
+
+  tutorIDDict = cur.fetchone()
+  tutorID = tutorIDDict['numId']
+
+  appointQuery = "INSERT INTO appointments (datenum,apptime,class,studentId,tutorId) VALUES('%s','%s','%s','%d','%d');" % (day,time,selClass,userID,tutorID)
+
+  cur.execute(appointQuery)
+  db.commit()
+
+
   return render_template('booked.html')
 
 @app.route('/search', methods=['GET', 'POST'])
