@@ -10,38 +10,32 @@
 		<th> Thursday </th>
 		<th> Friday </th>
 	</tr>
-	{% for thing in results %}
+	{% for n in range(0, length-1) %}
 	<tr>
-		{% if thing['dayofweek'] == 'Monday' %}
-		<td class='mon'><a href={{url_for('appointment4', dayofweek=thing['dayofweek'], hourof=thing['hourof'], studentId=thing['studentId'], selClass=selClass)}}>{{thing['hourof']}}</a></td> 
-		<td> </td>
-		<td> </td>
-		<td> </td>
-		<td> </td>
-		{% elif thing['dayofweek'] == 'Tuesday' %}
-		<td> </td>
-		<td class='tues'><a href={{url_for('appointment4', dayofweek=thing['dayofweek'], hourof=thing['hourof'], studentId=thing['studentId'], selClass=selClass)}}>{{thing['hourof']}}</a></td>
-		<td> </td>
-		<td> </td>
-		<td> </td>
-		{% elif thing['dayofweek'] == 'Wednesday' %}
-		<td> </td>
-		<td> </td>
-		<td><a href={{url_for('appointment4', dayofweek=thing['dayofweek'], hourof=thing['hourof'], studentId=thing['studentId'], selClass=selClass)}}>{{thing['hourof']}}</a></td>
-		<td> </td>
-		<td> </td>
-		{% elif thing['dayofweek'] == 'Thursday' %}
-		<td> </td>
-		<td> </td>
-		<td> </td>
-		<td><a href={{url_for('appointment4', dayofweek=thing['dayofweek'], hourof=thing['hourof'], studentId=thing['studentId'], selClass=selClass)}}>{{thing['hourof']}}</a></td>
-		<td> </td>
+		{% if n < monlen %}
+		<td class='mon'><a href={{url_for('appointment4', dayofweek=Monday[n]['dayofweek'], hourof=Monday[n]['hourof'], studentId=Monday[n]['studentId'], selClass=selClass)}}>{{Monday[n]['hourof']}}</a></td> 
 		{% else %}
 		<td> </td>
+		{% endif %}
+		{% if n < tuelen %}
+		<td class='tues'><a href={{url_for('appointment4', dayofweek=Tuesday[n]['dayofweek'], hourof=Tuesday[n]['hourof'], studentId=Tuesday[n]['studentId'], selClass=selClass)}}>{{Tuesday[n]['hourof']}}</a></td>
+		{% else %}
 		<td> </td>
+		{% endif %}
+		{% if n < wedlen %}
+		<td><a href={{url_for('appointment4', dayofweek=Wednesday[n]['dayofweek'], hourof=Wednesday[n]['hourof'], studentId=Wednesday[n]['studentId'], selClass=selClass)}}>{{Wednesday[n]['hourof']}}</a></td>
+		{% else %}
 		<td> </td>
+		{% endif %}
+		{% if n < thurlen %}
+		<td><a href={{url_for('appointment4', dayofweek=Thursday[n]['dayofweek'], hourof=Thursday[n]['hourof'], studentId=Thursday[n]['studentId'], selClass=selClass)}}>{{Thursday[n]['hourof']}}</a></td>
+		{% else %}
 		<td> </td>
-		<td><a href={{url_for('appointment4', dayofweek=thing['dayofweek'], hourof=thing['hourof'], studentId=thing['studentId'], selClass=selClass)}}>{{thing['hourof']}}</a></td>
+		{% endif %}
+		{% if n < frilen %}
+		<td><a href={{url_for('appointment4', dayofweek=Friday[n]['dayofweek'], hourof=Friday[n]['hourof'], studentId=Friday[n]['studentId'], selClass=selClass)}}>{{Friday[n]['hourof']}}</a></td>
+		{% else %}
+		<td> </td>
 		{% endif %}
 	</tr>
 	{% endfor %}

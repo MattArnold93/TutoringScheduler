@@ -1,7 +1,18 @@
 from flask import Flask, render_template, request, redirect, url_for, session
+from flask.ext.mail import Message, Mail
 import MySQLdb, utils, os, unicodedata, datetime
 
+MAIL_SERVER = 'smtp.gmail.com'
+MAIL_PORT = 465
+MAIL_USE_TLS = False
+MAIL_USE_SSL = True
+MAIL_USERNAME = "tutoringscheduler@gmail.com"
+MAIL_PASSWORD = "umwtutoringscheduler"
+
 app = Flask(__name__)
+app.config.from_object(__name__)
+mail = Mail(app)
+
 app.secret_key = os.urandom(24).encode('hex')
 
 @app.route('/index')
@@ -230,6 +241,11 @@ def appointment3():
   db = utils.db_connect()
   cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
   fullDict = []
+  Monday = []
+  Tuesday = []
+  Wednesday = []
+  Thursday = []
+  Friday = []
   results = []
 
   query = "SELECT studentId, classes, dayofweek, hourof FROM times"
@@ -237,18 +253,74 @@ def appointment3():
   db.commit()
   usrTimes = cur.fetchall()
   length = len(usrTimes)
+  daytimeDic = {}
   for y in range(0, length):
     dict1 = usrTimes[y]
     classes = dict1['classes']
+    dayweek = dict1['dayofweek']
+    time = dict1['hourof']
     if classes == None:
       continue
     if selClass in classes:
-      fullDict.append(dict1)
+      if (len(daytimeDic) == 0):
+        newDict = {dayweek:time}
+        daytimeDic.update(newDict)
+        if dayweek == 'Monday':
+          Monday.append(dict1)
+        elif dayweek == 'Tuesday':
+          Tuesday.append(dict1)
+        elif dayweek == 'Wednesday':
+          Wednesday.append(dict1)
+        elif dayweek == 'Thursday':
+          Thursday.append(dict1)
+        elif dayweek == 'Friday':
+          Friday.append(dict1)
+        fullDict.append(dict1)
+      else:
+        if(dayweek in daytimeDic):
+          keyvalue = daytimeDic.get(dayweek)
+          if(keyvalue == time):
+            continue
+          else:
+            newDict = {dayweek:time}
+            daytimeDic.update(newDict)
+            if dayweek == 'Monday':
+              Monday.append(dict1)
+            elif dayweek == 'Tuesday':
+              Tuesday.append(dict1)
+            elif dayweek == 'Wednesday':
+              Wednesday.append(dict1)
+            elif dayweek == 'Thursday':
+              Thursday.append(dict1)
+            elif dayweek == 'Friday':
+              Friday.append(dict1)
+            fullDict.append(dict1)
+        else:
+          newDict = {dayweek:time}
+          daytimeDic.update(newDict)
+          if dayweek == 'Monday':
+            Monday.append(dict1)
+          elif dayweek == 'Tuesday':
+            Tuesday.append(dict1)
+          elif dayweek == 'Wednesday':
+            Wednesday.append(dict1)
+          elif dayweek == 'Thursday':
+            Thursday.append(dict1)
+          elif dayweek == 'Friday':
+            Friday.append(dict1)
+          fullDict.append(dict1)
     else:
       continue
   results = fullDict
+  fulllength = len(results)
+  monlen = len(Monday)
+  tuelen = len(Tuesday)
+  wedlen = len(Wednesday)
+  thurlen = len(Thursday)
+  frilen = len(Friday)
   if results != []:
-    return render_template('schedule3.html', results=results, selClass=selClass)
+    return render_template('schedule3.html', selClass=selClass, Monday=Monday, Tuesday=Tuesday, Wednesday=Wednesday, Thursday=Thursday, 
+      Friday=Friday, length=fulllength, monlen=monlen, tuelen=tuelen, wedlen=wedlen, thurlen=thurlen, frilen=frilen)
 
 @app.route('/appoint4', methods=['GET', 'POST'])
 def appointment4():
@@ -338,6 +410,14 @@ def booking():
   cur.execute(appointQuery)
   db.commit()
 
+  emailSubject = "UMW %s Tutoring Appointment" % (selClass)
+  emailToStudent = "Hi There! Your appointment for tutoring in %s with %s %s has been made for %s at %s. Thank you for using the UMW Tutoring Scheduler!" % (selClass, firstname, lastname, day, time)
+  emailToTutor = "blah"
+  mail.connect()
+  studentmsg = Message('Hello', sender='tutoringscheduler@gmail.com', recipients=[session['username']])
+  studentmsg.subject = emailSubject
+  studentmsg.body = emailToStudent
+  mail.send(studentmsg)
 
   return render_template('booked.html')
 
