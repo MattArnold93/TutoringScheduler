@@ -241,6 +241,11 @@ def appointment3():
   db = utils.db_connect()
   cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
   fullDict = []
+  Monday = []
+  Tuesday = []
+  Wednesday = []
+  Thursday = []
+  Friday = []
   results = []
 
   query = "SELECT studentId, classes, dayofweek, hourof FROM times"
@@ -248,18 +253,74 @@ def appointment3():
   db.commit()
   usrTimes = cur.fetchall()
   length = len(usrTimes)
+  daytimeDic = {}
   for y in range(0, length):
     dict1 = usrTimes[y]
     classes = dict1['classes']
+    dayweek = dict1['dayofweek']
+    time = dict1['hourof']
     if classes == None:
       continue
     if selClass in classes:
-      fullDict.append(dict1)
+      if (len(daytimeDic) == 0):
+        newDict = {dayweek:time}
+        daytimeDic.update(newDict)
+        if dayweek == 'Monday':
+          Monday.append(dict1)
+        elif dayweek == 'Tuesday':
+          Tuesday.append(dict1)
+        elif dayweek == 'Wednesday':
+          Wednesday.append(dict1)
+        elif dayweek == 'Thursday':
+          Thursday.append(dict1)
+        elif dayweek == 'Friday':
+          Friday.append(dict1)
+        fullDict.append(dict1)
+      else:
+        if(dayweek in daytimeDic):
+          keyvalue = daytimeDic.get(dayweek)
+          if(keyvalue == time):
+            continue
+          else:
+            newDict = {dayweek:time}
+            daytimeDic.update(newDict)
+            if dayweek == 'Monday':
+              Monday.append(dict1)
+            elif dayweek == 'Tuesday':
+              Tuesday.append(dict1)
+            elif dayweek == 'Wednesday':
+              Wednesday.append(dict1)
+            elif dayweek == 'Thursday':
+              Thursday.append(dict1)
+            elif dayweek == 'Friday':
+              Friday.append(dict1)
+            fullDict.append(dict1)
+        else:
+          newDict = {dayweek:time}
+          daytimeDic.update(newDict)
+          if dayweek == 'Monday':
+            Monday.append(dict1)
+          elif dayweek == 'Tuesday':
+            Tuesday.append(dict1)
+          elif dayweek == 'Wednesday':
+            Wednesday.append(dict1)
+          elif dayweek == 'Thursday':
+            Thursday.append(dict1)
+          elif dayweek == 'Friday':
+            Friday.append(dict1)
+          fullDict.append(dict1)
     else:
       continue
   results = fullDict
+  fulllength = len(results)
+  monlen = len(Monday)
+  tuelen = len(Tuesday)
+  wedlen = len(Wednesday)
+  thurlen = len(Thursday)
+  frilen = len(Friday)
   if results != []:
-    return render_template('schedule3.html', results=results, selClass=selClass)
+    return render_template('schedule3.html', selClass=selClass, Monday=Monday, Tuesday=Tuesday, Wednesday=Wednesday, Thursday=Thursday, 
+      Friday=Friday, length=fulllength, monlen=monlen, tuelen=tuelen, wedlen=wedlen, thurlen=thurlen, frilen=frilen)
 
 @app.route('/appoint4', methods=['GET', 'POST'])
 def appointment4():
