@@ -8,19 +8,32 @@ app.secret_key = os.urandom(24).encode('hex')
 def index():
   db = utils.db_connect()
   cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  curUser = session['username']
+  query2 = "SELECT numId FROM users WHERE email = \'"+curUser+"\'"
+  cur.execute(query2)
+  user = cur.fetchone()
+  userID = user['numId']
+  searchQuery = "SELECT class, datenum, appointmenttime, tutorId FROM appointments WHERE studentId='%s'" % (userID)
+  cur.execute(searchQuery)
+  result = cur.fetchall()
+  if result == None:
+    results = "Nothing"
+  if result == {}:
+    results = "Nothing"
   queryStat = "SELECT accountStatus FROM users WHERE email = '" + session['username'] + "' AND password = '" + session['password'] + "';"
-  print queryStat
   cur.execute(queryStat)
-  print "executed"
   row = cur.fetchone()
-  print row['accountStatus']
+  Fullname = " "
   if row['accountStatus'] == 1:
     session['Status'] = "admin"
   elif row['accountStatus'] == 2:
     session['Status'] = "tutor"
   elif row['accountStatus'] == 3:
     session['Status'] = "student"
-  return render_template('index.html', row=row)
+  fname = row['firstname']
+  lname = row['lastname']
+  name = fname + " " + lname
+  return render_template('index.html', row=row, Fullname=name, results = result,)
 
 @app.route('/logout')
 def logout():

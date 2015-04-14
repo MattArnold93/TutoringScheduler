@@ -1,9 +1,13 @@
 {% extends "layout.html" %}
 
 {% block content %}
-        <h1>Congratz! You've logged in as:</h1>
-        <p>{{session['username']}}</p>
-        <p>{{session['Status']}}</p>
+        <h1>Welcome {{Fullname}}</h1>
+{% if results == "Nothing" %}
+        <p>You have no appointments scheduled.</p>
+{% else %}
+        {% for thing in results %}
+			<p>You have an appointment on {{thing['datenum']}} at {{thing['appointmenttime']}} in {{thing['class']}}</p>
+		{% endfor %}
 				
 					</form>
 {% endblock %}
