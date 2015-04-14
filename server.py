@@ -32,7 +32,6 @@ def index():
   result = cur.fetchall()
   if not result:
     result = "Nothing"
-    print ("Nothing")
   queryStat = "SELECT accountStatus FROM users WHERE email = '" + session['username'] + "' AND password = '" + session['password'] + "';"
   cur.execute(queryStat)
   row = cur.fetchone()
@@ -69,17 +68,11 @@ def edit():
      password = unicodedata.normalize('NFKD', password).encode('ascii','ignore')
      oldP = unicodedata.normalize('NFKD', oldP).encode('ascii','ignore')
      newPass = unicodedata.normalize('NFKD', newPass).encode('ascii','ignore')
-     print "PASSWORD = " + password
-     print "OLD P = " + oldP
-     print "NEW P = " + newPass
     
      error = "notSame"
-     #print "IF OLDP"
      if oldP == password:
-       print "IF OLDP"
        if level != "admin":
          query = "UPDATE users SET password = '%s' WHERE email = '%s'" % (newPass, email)
-         print "Level = " + level
          cur.execute(query)
          db.commit()
          error = "password"
@@ -111,21 +104,16 @@ def createTutor():
       cur.execute(query2)
       test = cur.fetchone()
       if test:
-        print test
         if test['accountStatus'] == 1:
           created = "admin"
-          print "Admin"
         elif test['accountStatus'] == 2:
           created = "no"
-          print "Tutor"
         elif test['accountStatus'] == 3:
-          print "Student"
           created = "updated"
           #if the query here does not activate, take out classes + and leave it '%s'
           query3 = "UPDATE users SET accountStatus = 2, classes = classes + '%s' WHERE email = '%s';" % (course, email)
           cur.execute(query3)
       else:
-        print "Not Created"
         created = "yes"
         query = "INSERT INTO users (firstname,lastname,email,password,accountStatus,classes) VALUES('%s','%s','%s','%s',2, '%s');" % (first,last,email,password, course)
         cur.execute(query)
@@ -144,9 +132,6 @@ def delete():
     reason = request.form['reason']
     query = "SELECT * FROM users WHERE firstname = '%s' AND lastname = '%s' AND email = '%s';" % (firstname, lastname, email)
     cur.execute(query)
-    account = cur.fetchone()
-    print session['username']
-    print email
     if email == session['username']:
       exist = "admin"
     elif account:
@@ -164,26 +149,20 @@ def login():
     cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
     error = ""
     if request.method == 'POST':
-      print "yay"
       row = []
       email = request.form['email']
       password = request.form['password']
       query = "SELECT * FROM users WHERE email = '%s' AND password = '%s'" % (email, password) 
-      print query
       cur.execute(query)
       login = cur.fetchone()
       db.commit()
-      print "committed"
-      print('login: ', login)
       if login:
         session['username'] = email
         session['password'] = password
         session['logged_in'] = "yes"
-        print "redirect"
         return redirect(url_for('index'))
       else:
         error = "true"
-        print "error"
     return render_template('login.html', error=error)
 
 @app.route('/register', methods=['GET','POST'])
@@ -200,10 +179,8 @@ def register():
     lastname=request.form['lastname']
     email=request.form['email']
     password=request.form['password']
-    print firstname + " " + lastname + " " + email + " " + password
     if "mail.umw.edu" in email and firstname and lastname and password:
       query = "INSERT INTO users (firstname,lastname,email,password,accountStatus) VALUES('%s','%s','%s','%s',3);" % (firstname,lastname,email,password)
-      print query
       cur.execute(query)
       db.commit()
       return redirect(url_for('login'))
@@ -211,16 +188,12 @@ def register():
       error = "true"
       if "mail.umw.edu" not in email or not email:
         errorMail = "true"
-        print "nomail"
       if not firstname:
         errorFirst = "true"
-        print "Noname"
       if not lastname:
         errorLast = "true"
-        print "noname2"
       if not password:
         errorPass = "true"
-        print "nopass"
   return render_template('register.html', errorMail=errorMail, errorFirst=errorFirst, errorLast=errorLast, errorPass=errorPass, error=error)
 
 @app.route('/AdminDash')
@@ -231,10 +204,8 @@ def AdminDash():
   stuff = []
   query = "SELECT * FROM users WHERE level LIKE 'ADMIN'"
   cur.execute(query)
-  
   results = cur.fetchall()
   #for result in results:
-
   return "AdminDash"
 
 @app.route('/Schedule')
@@ -276,7 +247,6 @@ def appointment3():
   cur.execute(query)
   db.commit()
   usrTimes = cur.fetchall()
-  print usrTimes
   length = len(usrTimes)
   for y in range(0, length):
     dict1 = usrTimes[y]
@@ -288,17 +258,7 @@ def appointment3():
     else:
       continue
   results = fullDict
-  for item in results:
-    if item['dayofweek'] == "Monday":
-      print "fun"
-    elif item['dayofweek'] == "Tuesday":
-      print "not fun"
-    elif item['dayofweek'] == "Wednesday":
-      print "bafds"
-    else:
-      print "sdgsdddddss"
   if results != []:
-    print results
     return render_template('schedule3.html', results=results, selClass=selClass)
 
 @app.route('/appoint4', methods=['GET', 'POST'])
@@ -334,7 +294,6 @@ def appointment4():
   tutorFirst = tutor['firstname']
   tutorLast = tutor['lastname']
   name = tutorFirst + " " + tutorLast
-  print name
 
   date = datetime.date.today()
   currentDate = datetime.date.today().weekday()
@@ -415,39 +374,29 @@ def search():
   stuff = ""
   results = ""
   queryType = ""
-  print request.method
   if request.method == 'POST':
     queryType = "yes"
     firstname = request.form['firstname']
     lastname = request.form['lastname']
     subject = request.form['Subject']
     course = request.form['CourseNum']
-    print firstname + lastname + course
     if firstname and lastname and not course:
-      print "IM HERE!!!!"
       query = "SELECT firstname, lastname, classes FROM users WHERE firstname LIKE '" + firstname + "' AND lastname LIKE '" + lastname + "' AND accountStatus = 2 AND classes LIKE '%" + subject + "%';"
       cur.execute(query)
       results = cur.fetchall()
       db.commit()
     elif (firstname or lastname) and not course:
-      print "apples"
       query = "SELECT firstname, lastname, classes FROM users WHERE (firstname LIKE '" + firstname + "' OR lastname LIKE '" + lastname + "') AND accountStatus = 2 AND classes LIKE '%" + subject + "%';"
-      print query
       cur.execute(query)
       results = cur.fetchall()
       db.commit()
-      print results
     elif firstname and lastname and course:
-      print "DERPPPPP"
       query = "SELECT firstname, lastname, classes FROM users WHERE firstname LIKE '" + firstname + "' AND lastname LIKE '" + lastname + "' AND accountStatus = 2 AND classes LIKE '%" + subject + "-" + course + "%';"
-      print query
       cur.execute(query)
       results = cur.fetchall()
       db.commit()
     elif (firstname or lastname) and course:
-      print "AJwlekfjSKj"
       query = "SELECT firstname, lastname, classes FROM users WHERE (firstname LIKE '" + firstname + "' OR lastname LIKE '" + lastname + "') AND accountStatus = 2 AND classes LIKE '%" + subject + "-" + course + "%';"
-      print query
       cur.execute(query)
       results = cur.fetchall()
       db.commit()
@@ -457,13 +406,11 @@ def search():
         cur.execute(query)
         results = cur.fetchall()
         db.commit()
-        print results
       elif subject and course:
         query = "SELECT firstname, lastname FROM users WHERE classes LIKE '%" + subject + "-" + course + "%';"
         cur.execute(query)
         results = cur.fetchall()
         db.commit()
-        print results
   return render_template('search.html', stuff = stuff, selectedMenu='search', results=results, queryType=queryType, adminName=username)
   
 
