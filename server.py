@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, session
+from flask_mail import Mail
 import MySQLdb, utils, os, unicodedata, datetime
 
 app = Flask(__name__)
+mail = Mail(app)
 app.secret_key = os.urandom(24).encode('hex')
 
 @app.route('/index')
@@ -367,9 +369,6 @@ def booking():
   userIDDict = cur.fetchone()
   userID = userIDDict['numId']
 
-  print firstname
-  print lastname
-
   tutorQuery = "SELECT numId FROM users WHERE firstname=\""+firstname+"\" AND lastname=\"" + lastname + "\""
 
   cur.execute(tutorQuery)
@@ -382,6 +381,14 @@ def booking():
 
   cur.execute(appointQuery)
   db.commit()
+
+  emailSubject = "UMW '%s' Tutoring Appointment"
+  emailToStudent = "Hi There! Your appointment for tutoring in '%s' with '%s' '%s' has been made for '%s' at '%s'. Thank you for using the UMW Tutoring Scheduler!" % (selClass, firstname, lastname, day, time)
+  emailToTutor = "blah"
+  mail.connect()
+  studentmsg = Message(recipients=session['username'], sender="umwtutoringscheduler@umw.edu", body=emailToStudent, subject=emailSubject)
+  mail.send(studentmsg)
+
 
 
   return render_template('booked.html')

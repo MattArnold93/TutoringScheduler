@@ -6,7 +6,7 @@
         <p>You have no appointments scheduled.</p>
 {% else %}
         {% for thing in results %}
-			<p>You have an appointment on {{thing['datenum']}} at {{thing['appointmenttime']}} in {{thing['class']}}</p>
+			<p>You have an appointment on {{thing['datenum']}} at {{thing['apptime']}} in {{thing['class']}}</p>
 		{% endfor %}
 				
 					</form>
