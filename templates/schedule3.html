@@ -10,7 +10,7 @@
 		<th> Thursday </th>
 		<th> Friday </th>
 	</tr>
-	{% for n in range(0, length) %}
+	{% for n in range(0, length-1) %}
 	<tr>
 		{% if n < monlen %}
 		<td class='mon'><a href={{url_for('appointment4', dayofweek=Monday[n]['dayofweek'], hourof=Monday[n]['hourof'], studentId=Monday[n]['studentId'], selClass=selClass)}}>{{Monday[n]['hourof']}}</a></td> 

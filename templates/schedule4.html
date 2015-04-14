@@ -7,13 +7,13 @@
 	<h3> Please confirm the information below, then press "Confirm" to book your appointment </h3>
 	<div id="content">
 		<form method='post' action='/bookapp'>
-			<h4>Tutor: <input type="text" name="name" value='{{results['tutorFirst']}} {{results['tutorLast']}}' readOnly="true"></h4>
+			<h4>Tutor: <input class='confirm' type="text" name="name" value='{{results['tutorFirst']}} {{results['tutorLast']}}' readOnly="true"></h4>
 				<br>
-			<h4>Class: <input type="text" name="class" value={{results['class']}} readOnly="true"></h4>
+			<h4>Class: <input class='confirm' type="text" name="class" value={{results['class']}} readOnly="true"></h4>
 				<br>
-			<h4>Day: <input type="text" name="dayofweek" value='{{results['nextorlast']}} {{results['dayofweek']}}' readOnly="true"> </h4>
+			<h4>Day: <input class='confirm' type="text" name="dayofweek" value='{{results['nextorlast']}} {{results['dayofweek']}}' readOnly="true"> </h4>
 				<br>
-			<h4>Time: <input type="text" name="time" value={{results['hourof']}} readOnly="true"></h4>
+			<h4>Time: <input class='confirm' type="text" name="time" value={{results['hourof']}} readOnly="true"></h4>
 				<br>
 			<input type='submit' name="confirm" value='Confirm'>
 		</form>
