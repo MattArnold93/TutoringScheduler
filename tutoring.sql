@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS appointments
 (
 	numId INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (numId),
-    datenum int(20) NOT NULL,
-	appointmenttime int(30) NOT NULL,
+    datenum varchar(30) NOT NULL,
+	apptime varchar(30) NOT NULL,
 	class varchar(15) NOT NULL,
 	studentId int(100) NOT NULL,
 	tutorId int(100) NOT NULL,
