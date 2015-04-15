@@ -9,6 +9,12 @@
     <h3>Administrator Account has be updated.</h3>
     <br>
     <br>
+    {% elif errors == "nothing" %}
+    <h3>Nothing has been inputted for Admin.</h3>
+    {% elif errors == "pass" %}
+    <h3>Error. No new password has been added.</h3>
+    {% elif errors == "email" %}
+    <h3>New Email is not UMW staff email.</h3>
     {% elif errors == "password" %}
     <h3>Your password has been updated.</h3>
     <br>

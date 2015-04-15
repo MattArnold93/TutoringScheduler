@@ -16,7 +16,11 @@
     <div id="header">
       <div id="logo">
         <!-- class="logo_colour", allows you to change the colour of the text -->
+        {% if session['logged_in'] %}
+        <h1><a href="/index"><span class="logo_colour"> UMW Tutoring Scheduler {{selectedMenu}}</span></a></h1>
+        {% else %}
         <h1><a href="/"><span class="logo_colour"> UMW Tutoring Scheduler {{selectedMenu}}</span></a></h1>
+        {% endif %}
         <h2>Need help is a class? Request a tutor to help!</h2>
       </div>
       <div id="menubar">

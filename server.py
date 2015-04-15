@@ -181,38 +181,60 @@ def logout():
 
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
-   db = utils.db_connect()
-   cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-   error = " "
-   if request.method == 'POST':
-     password = session['password']
-     oldP = request.form['oldpassword']
-     newPass = request.form['password']
-     email = session['username']
-     level = session['Status']
-    
-     password = unicodedata.normalize('NFKD', password).encode('ascii','ignore')
-     oldP = unicodedata.normalize('NFKD', oldP).encode('ascii','ignore')
-     newPass = unicodedata.normalize('NFKD', newPass).encode('ascii','ignore')
-    
-     error = "notSame"
-     if oldP == password:
-       if level != "admin":
-         query = "UPDATE users SET password = '%s' WHERE email = '%s'" % (newPass, email)
-         cur.execute(query)
-         db.commit()
-         error = "password"
-  
-       elif level == "admin":
-         firstname = request.form['firstName']
-         lastname = request.form['lastName']
-         newEmail = request.form['email']
-         query = "UPDATE users SET firstname = '%s', lastname = '%s', email = '%s', password = '%s' WHERE email = '%s'" % (firstname, lastname, newEmail, newPass, email)
-         cur.execute(query)
-         db.commit()
-         error = "new"
-     session['password'] = newPass
-   return render_template('edit.html', errors=error)
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  error = " "
+  if request.method == 'POST':
+    password = session['password']
+    oldP = request.form['oldpassword']
+    newPass = request.form['password']
+    email = session['username']
+    level = session['Status']
+   
+    password = unicodedata.normalize('NFKD', password).encode('ascii','ignore')
+    oldP = unicodedata.normalize('NFKD', oldP).encode('ascii','ignore')
+    newPass = unicodedata.normalize('NFKD', newPass).encode('ascii','ignore')
+
+    error = "notSame"
+    if oldP == password:
+      print "yay"
+      if level != "admin":
+        if not newPass:
+          error = "pass"
+        else:
+          query = "UPDATE users SET password = '%s' WHERE email = '%s'" % (newPass, email)
+          cur.execute(query)
+          db.commit()
+          error = "password"
+      elif level == "admin":
+        query1 = "SELECT * FROM users WHERE email = '%s';" % (email)
+        cur.execute(query1)
+        db.commit()
+        info = cur.fetchone() 
+        firstname = request.form['firstName']
+        lastname = request.form['lastName']
+        newEmail = request.form['email']
+        if not firstname and not lastname and not newEmail and not newPass:
+          print "HIIIIIII"
+          error = "nothing"
+        elif newEmail and '@umw.edu' not in newEmail:
+          error = "email"
+        else:
+          print "NOOOO"
+          if not firstname:
+            firstname = info['firstname']
+          if not lastname:
+            lastname = info['lastname']
+          if not newEmail:
+            newEmail = email
+          if not newPass:
+             newPass = password
+          query = "UPDATE users SET firstname = '%s', lastname = '%s', email = '%s', password = '%s' WHERE email = '%s';" % (firstname, lastname, newEmail, newPass, email)
+          cur.execute(query)
+          db.commit()
+          error = "new"
+    session['password'] = newPass
+  return render_template('edit.html', errors=error)
 
 @app.route('/createTutor', methods=['GET', 'POST'])
 def createTutor():
@@ -369,6 +391,7 @@ def delete():
     reason = request.form['reason']
     query = "SELECT * FROM users WHERE firstname = '%s' AND lastname = '%s' AND email = '%s';" % (firstname, lastname, email)
     cur.execute(query)
+    account = cur.fetchone()
     if email == session['username']:
       exist = "admin"
     elif account:
