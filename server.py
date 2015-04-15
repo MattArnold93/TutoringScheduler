@@ -51,6 +51,85 @@ def editAppointment():
     apptime = upTime
   return render_template('editAppointment.html',numId=numId, day=datenum, time=apptime, sub=subject, sname=name, done=d)
 
+@app.route('/time')
+def time():
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  b=[]
+  username = session['username']
+  IDquery = "SELECT numId FROM users WHERE email = '%s'" % (username)
+  cur.execute(IDquery)
+  user = cur.fetchone()
+  numId = user['numId']
+  appQuery = "SELECT dayofweek, hourof FROM times WHERE studentId = '%s'" % (numId)
+  cur.execute(appQuery)
+  apps = cur.fetchall()
+  for thing in apps:
+    time = thing['hourof']
+    day = thing['dayofweek']
+    app = time + day
+    b.append(app)
+  return render_template('time.html',a=b)
+  
+@app.route('/editTime', methods=['GET', 'POST'] )
+def editTime():
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  username = session['username']
+  error = "error"
+  if request.method == 'POST':
+    date = request.form.getlist('hour')
+    query = "SELECT numId,classes FROM users WHERE email = '%s'" % (username)
+    cur.execute(query)
+    tutor = cur.fetchone()
+    Id = tutor['numId']
+    subjects = tutor['classes']
+    query2 = "DELETE FROM times WHERE studentId = '%s';" % (Id)
+    cur.execute(query2)
+    db.commit();
+    if date:
+      for h in date:
+        hour = h[:2]
+        day = h[2:]
+        if hour == "06":
+          hour = "6:00AM"
+        elif hour == "07":
+          hour = "7:00AM"
+        elif hour == "08":
+          hour = "8:00AM"
+        elif hour == "09":
+          hour = "9:00AM"
+        elif hour == "10":
+          hour = "10:00AM"
+        elif hour == "11":
+          hour = "11:00AM"
+        elif hour == "12":
+          hour = "12:00PM"
+        elif hour == "13":
+          hour = "1:00PM"
+        elif hour == "14":
+          hour = "2:00PM"
+        elif hour == "15":
+          hour = "3:00PM"
+        elif hour == "16":
+          hour = "4:00PM"
+        elif hour == "17":
+          hour = "5:00PM"
+        elif hour == "18":
+          hour = "6:00PM"
+        elif hour == "19":
+          hour = "7:00PM"
+        elif hour == "20":
+          hour = "8:00PM"
+        elif hour == "21":
+          hour = "9:00PM"
+        query3 = "INSERT INTO times (studentId,classes,dayofweek,hourof) VALUES('%s','%s','%s','%s');" % (Id,subjects,day,hour)
+        cur.execute(query3)
+        db.commit()
+        error = "sucess"
+  return render_template('editTime.html', errors = error)
+  
+
 @app.route('/index')
 def index():
   db = utils.db_connect()
