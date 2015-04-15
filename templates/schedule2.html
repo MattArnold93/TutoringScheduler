@@ -3,7 +3,7 @@
 {% block content %}
 <h1> Book an Appointment </h1>
 <h3> Please choose a class</h3>
-<form method="post" action="/appoint3">
+<form method="post" action="/sched3">
 	<select class="classtype" name="class">
 		{% for thing in classes %}
 			<option value={{thing['class']}}>{{thing['class']}}</option>

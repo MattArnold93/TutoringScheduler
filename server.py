@@ -355,6 +355,17 @@ def appointment2():
 
   return render_template('schedule2.html', classes=classes)
 
+@app.route('/sched3', methods=['GET','POST'])
+def sched3():
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  selClass = request.form['class']
+  query = "SELECT firstname, lastname, numId FROM users WHERE classes LIKE '%" + selClass + "%';"
+  cur.execute(query)
+  tutors = cur.fetchall()
+  return render_template('sched3.html', lTutors = tutors, course=selClass)  
+
+
 @app.route('/appoint3', methods=['GET', 'POST'])
 def appointment3():
   selClass = request.form['class']
