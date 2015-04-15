@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class = "articleTitle">
+  <h1>Create a Tutor </h1>
+  
+  <div class = "articleContent">
+    {% if created == "deleted" %}
+    <p>Course has been removed from tutor</p>
+    {% elif created == "both" %}
+    <p>Courses have been editted for tutor</p>
+    {% elif created == "no" %}
+    <p>Error! Tutor does not exist!</p>
+    {% elif created == "student" %}
+    <p>Error! Account belongs to a student!</p>
+    {% elif created == "updated" %}
+    <p>Course has been added to the tutor.</p>
+    {% elif created == "admin" %}
+    <p>Error! Account is admin!</p>
+    {% elif created == "nothing" %}
+    <p>Nothing has been added or deleted</p>
+    {% elif created == "exist" %}
+    <p>Course already exists in tutor account</p>
+    {% endif %}
+    <p>Please enter the name and email of the tutor you wish to edit:</p>
+    <br>
+            <form method="post">
+
+            <table>
+						
+					<tr><td>First Name: </td><td><input type="text" id="firstname" name="firstname" placeholder="First Name"/></td></tr>
+					<tr><td>Last Name: </td><td><input type="text" id="lastname" name="lastname" placeholder="Last Name"/></td></tr>
+          <tr><td>Email: </td><td><input name="email" type="text" id="email" placeholder="Email" maxlength="96"/></td></tr>
+           
+
+					<tr><td>&nbsp;</td><td><input type="submit" value="Edit Tutor" /></td></tr>
+					</table>
+    
+{% endblock %}
