@@ -123,7 +123,7 @@ def editTime():
           hour = "8:00PM"
         elif hour == "21":
           hour = "9:00PM"
-        query3 = "INSERT INTO times (studentId,classes,dayofweek,hourof) VALUES('%s','%s','%s','%s');" % (Id,subjects,day,hour)
+        query3 = "INSERT INTO times (studentId,classes,dayofweek,hourof,available) VALUES('%s','%s','%s','%s',1);" % (Id,subjects,day,hour)
         cur.execute(query3)
         db.commit()
         error = "sucess"
@@ -460,6 +460,37 @@ def appointment2():
 
   return render_template('schedule2.html', classes=classes)
 
+@app.route('/hours',methods=['GET','POST'])
+def hours():
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  fname=request.args.get('firstname')
+  lname=request.args.get('lastname')
+  classes=request.args.get('subject')
+  print (classes)
+  username=session['username']
+  query = "SELECT numId FROM users WHERE email='%s'" % (username)
+  cur.execute(query)
+  student = cur.fetchone()
+  sId = student['numId']
+  username = fname + " " + lname
+  b=[]
+  IDquery = "SELECT numId FROM users WHERE firstname = '%s' AND lastname = '%s'" % (fname, lname)
+  cur.execute(IDquery)
+  user = cur.fetchone()
+  numId = user['numId']
+  appQuery = "SELECT dayofweek, hourof FROM times WHERE studentId = '%s' AND available = '0'" % (numId)
+  print (appQuery)
+  cur.execute(appQuery)
+  apps = cur.fetchall()
+  for thing in apps:
+    time = thing['hourof']
+    day = thing['dayofweek']
+    app = time + day
+    b.append(app)
+  return render_template('hours.html', name=username, a=b, tutorId=numId, studentId=sId, course=classes)
+
+
 @app.route('/sched3', methods=['GET','POST'])
 def sched3():
   db = utils.db_connect()
@@ -468,7 +499,7 @@ def sched3():
   query = "SELECT firstname, lastname, numId FROM users WHERE classes LIKE '%" + selClass + "%';"
   cur.execute(query)
   tutors = cur.fetchall()
-  return render_template('sched3.html', lTutors = tutors, course=selClass)  
+  return render_template('sched3.html', results = tutors, course=selClass)  
 
 
 @app.route('/appoint3', methods=['GET', 'POST'])
@@ -640,9 +671,13 @@ def booking():
 
   tutorIDDict = cur.fetchone()
   tutorID = tutorIDDict['numId']
-
+  
+  bookquery = "UPDATE times SET available = 1 WHERE studentId = '%s' AND hourof = '%s' AND dayofweek = '%s';" % (tutorID, time, day)
+  cur.execute(bookquery)
+  db.commit()
+  
   appointQuery = "INSERT INTO appointments (datenum,apptime,class,studentId,tutorId) VALUES('%s','%s','%s','%d','%d');" % (day,time,selClass,userID,tutorID)
-
+  
   cur.execute(appointQuery)
   db.commit()
 
@@ -671,12 +706,14 @@ def search():
   stuff = ""
   results = ""
   queryType = ""
+  a=""
   if request.method == 'POST':
     queryType = "yes"
     firstname = request.form['firstname']
     lastname = request.form['lastname']
     subject = request.form['Subject']
     course = request.form['CourseNum']
+    a = subject+"-"+course
     if firstname and lastname and not course:
       query = "SELECT firstname, lastname, classes FROM users WHERE firstname LIKE '" + firstname + "' AND lastname LIKE '" + lastname + "' AND accountStatus = 2 AND classes LIKE '%" + subject + "%';"
       cur.execute(query)
@@ -704,13 +741,13 @@ def search():
         results = cur.fetchall()
         db.commit()
       elif subject and course:
-        query = "SELECT firstname, lastname FROM users WHERE classes LIKE '%" + subject + "-" + course + "%';"
+        query = "SELECT firstname, lastname, classes FROM users WHERE classes LIKE '%" + subject + "-" + course + "%';"
         cur.execute(query)
         results = cur.fetchall()
         db.commit()
-  return render_template('search.html', stuff = stuff, selectedMenu='search', results=results, queryType=queryType, adminName=username)
+  return render_template('search.html', stuff = stuff, selectedMenu='search', results=results, queryType=queryType, adminName=username, a=a)
   
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=3000, debug=True)
+  app.run(host='0.0.0.0', port=8080, debug=True)
 

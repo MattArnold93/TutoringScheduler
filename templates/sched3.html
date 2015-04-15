@@ -3,9 +3,12 @@
 {% block content %}
 	<h1> Tutors in {{course}} </h1>
 	
-	
-	
-	
-	
-	</table> 
+	 <table>
+      <tr><th>First name</th><th>Last name</th><th>Courses</th><th>Schedule</th></tr>
+      {% for result in results %}
+      <tr><td>{{result['firstname']}}</td><td>{{result['lastname']}}</td><td>{{course}}</td><td><a href={{url_for('hours', firstname=result['firstname'], lastname=result['lastname'], subject=course)}}>View</a></td></tr>
+      {% endfor %}
+    
+    </table>
+
 {% endblock %}

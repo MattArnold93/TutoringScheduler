@@ -1,0 +1,181 @@
+{% extends "layout.html" %}
+
+{% block content %}
+	<h1> {{name}}'s Schedule </h1>
+	
+	<h1> Hours Available </h1>
+	<h3> Choose a time </h3>
+	<table style="width:100%">
+  <tr>
+    <th></th>
+    <th>Monday</th>
+    <th>Tuesday</th>		
+    <th>Wednesday</th>
+    <th>Thursday</th>
+    <th>Friday</th>
+    <th>Saturday</th>
+    <th>Sunday</th>
+  </tr>
+  <tr>
+    <td><h3>6AM</h3></td>
+    <td>{% if '6:00AMMonday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Monday", hourof="6:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>		
+    <td>{% if '6:00AMTuesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Tuesday", hourof="6:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '6:00AMWednesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Wednesday", hourof="6:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '6:00AMThursday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Thursday", hourof="6:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '6:00AMFriday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Friday", hourof="6:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '6:00AMSaturday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Saturday", hourof="6:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '6:00AMSunday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Sunday", hourof="6:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+  </tr>
+  <tr>
+    <td><h3>7AM</h3></td>
+    <td>{% if '7:00AMMonday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Monday", hourof="7:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>		
+    <td>{% if '7:00AMTuesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Tuesday", hourof="7:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '7:00AMWednesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Wednesday", hourof="7:00AM", studentId=tutorId, selClass=course)}}>Available</a>e</h5>{%endif%}</td>
+    <td>{% if '7:00AMThursday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Thursday", hourof="7:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '7:00AMFriday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Friday", hourof="7:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '7:00AMSaturday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Saturday", hourof="7:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '7:00AMSunday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Sunday", hourof="7:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+  </tr>
+  <tr>
+    <td><h3>8AM</h3></td>
+    <td>{% if '8:00AMMonday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Monday", hourof="8:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>		
+    <td>{% if '8:00AMTuesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Tuesday", hourof="8:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '8:00AMWednesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Wednesday", hourof="8:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '8:00AMThursday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Thursday", hourof="8:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '8:00AMFriday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Friday", hourof="8:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '8:00AMSaturday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Saturday", hourof="8:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '8:00AMSunday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Sunday", hourof="8:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+  </tr>
+  <tr>
+    <td><h3>9AM</h3></td>
+    <td>{% if '9:00AMMonday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Monday", hourof="9:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>		
+    <td>{% if '9:00AMTuesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Tuesday", hourof="9:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '9:00AMWednesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Wednesday", hourof="9:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '9:00AMThursday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Thursday", hourof="9:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '9:00AMFriday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Friday", hourof="9:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '9:00AMSaturday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Saturday", hourof="9:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '9:00AMSunday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Sunday", hourof="9:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+  </tr>
+  <tr>
+    <td><h3>10AM</h3></td>
+    <td>{% if '10:00AMMonday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Monday", hourof="10:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>		
+    <td>{% if '10:00AMTuesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Tuesday", hourof="10:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '10:00AMWednesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Wednesday", hourof="10:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '10:00AMThursday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Thursday", hourof="10:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '10:00AMFriday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Friday", hourof="10:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '10:00AMSaturday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Saturday", hourof="10:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '10:00AMSunday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Sunday", hourof="10:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+  </tr>
+  <tr>
+    <td><h3>11AM</h3></td>
+    <td>{% if '11:00AMMonday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Monday", hourof="11:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>		
+    <td>{% if '11:00AMTuesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Tuesday", hourof="11:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '11:00AMWednesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Wednesday", hourof="11:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '11:00AMThursday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Thursday", hourof="11:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '11:00AMFriday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Friday", hourof="11:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '11:00AMSaturday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Saturday", hourof="11:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '11:00AMSunday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Sunday", hourof="11:00AM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+  </tr>
+  <tr>
+    <td><h3>12PM</h3></td>
+    <td>{% if '12:00PMMonday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Monday", hourof="12:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>		
+    <td>{% if '12:00PMTuesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Tuesday", hourof="12:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '12:00PMWednesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Wednesday", hourof="12:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '12:00PMThursday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Thursday", hourof="12:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '12:00PMFriday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Friday", hourof="12:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '12:00PMSaturday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Saturday", hourof="12:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '12:00PMSunday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Sunday", hourof="12:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+  </tr>
+  <tr>
+    <td><h3>1PM</h3></td>
+    <td>{% if '1:00PMMonday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Monday", hourof="1:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>		
+    <td>{% if '1:00PMTuesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Tuesday", hourof="1:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '1:00PMWednesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Wednesday", hourof="1:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '1:00PMThursday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Thursday", hourof="1:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '1:00PMFriday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Friday", hourof="1:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '1:00PMSaturday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Saturday", hourof="1:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '1:00PMSunday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Sunday", hourof="1:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+  </tr>
+  <tr>
+    <td><h3>2PM</h3></td>
+    <td>{% if '2:00PMMonday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Monday", hourof="2:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>		
+    <td>{% if '2:00PMTuesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Tuesday", hourof="2:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '2:00PMWednesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Wednesday", hourof="2:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '2:00PMThursday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Thursday", hourof="2:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '2:00PMFriday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Friday", hourof="2:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '2:00PMSaturday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Saturday", hourof="2:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '2:00PMSunday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Sunday", hourof="2:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+  </tr>
+  <tr>
+    <td><h3>3PM</h3></td>
+    <td>{% if '3:00PMMonday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Monday", hourof="3:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>		
+    <td>{% if '3:00PMTuesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Tuesday", hourof="3:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '3:00PMWednesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Wednesday", hourof="3:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '3:00PMThursday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Thursday", hourof="3:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '3:00PMFriday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Friday", hourof="3:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '3:00PMSaturday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Saturday", hourof="3:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '3:00PMSunday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Sunday", hourof="3:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+  </tr>
+  <tr>
+    <td><h3>4PM</h3></td>
+    <td>{% if '4:00PMMonday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Monday", hourof="4:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>		
+    <td>{% if '4:00PMTuesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Tuesday", hourof="4:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '4:00PMWednesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Wednesday", hourof="4:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '4:00PMThursday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Thursday", hourof="4:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '4:00PMFriday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Friday", hourof="4:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '4:00PMSaturday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Saturday", hourof="4:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '4:00PMSunday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Sunday", hourof="4:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+  </tr>
+  <tr>
+    <td><h3>5PM</h3></td>
+    <td>{% if '5:00PMMonday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Monday", hourof="5:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>		
+    <td>{% if '5:00PMTuesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Tuesday", hourof="5:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '5:00PMWednesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Wednesday", hourof="5:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '5:00PMThursday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Thursday", hourof="5:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '5:00PMFriday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Friday", hourof="5:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '5:00PMSaturday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Saturday", hourof="5:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '5:00PMSunday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Sunday", hourof="5:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+  </tr>
+  <tr>
+    <td><h3>6PM</h3></td>
+    <td>{% if '6:00PMMonday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Monday", hourof="6:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>		
+    <td>{% if '6:00PMTuesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Tuesday", hourof="6:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '6:00PMWednesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Wednesday", hourof="6:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '6:00PMThursday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Thursday", hourof="6:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '6:00PMFriday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Friday", hourof="6:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '6:00PMSaturday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Saturday", hourof="6:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '6:00PMSunday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Sunday", hourof="6:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+  </tr>
+  <tr>
+    <td><h3>7PM</h3></td>
+    <td>{% if '7:00PMMonday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Monday", hourof="7:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>		
+    <td>{% if '7:00PMTuesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Tuesday", hourof="7:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '7:00PMWednesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Wednesday", hourof="7:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '7:00PMThursday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Thursday", hourof="7:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '7:00PMFriday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Friday", hourof="7:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '7:00PMSaturday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Saturday", hourof="7:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '7:00PMSunday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Sunday", hourof="7:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+  </tr>
+  <tr>
+    <td><h3>8PM</h3></td>
+    <td>{% if '8:00PMMonday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Monday", hourof="8:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>		
+    <td>{% if '8:00PMTuesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Tuesday", hourof="8:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '8:00PMWednesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Wednesday", hourof="8:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '8:00PMThursday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Thursday", hourof="8:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '8:00PMFriday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Friday", hourof="8:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '8:00PMSaturday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Saturday", hourof="8:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '8:00PMSunday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Sunday", hourof="8:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+  </tr>
+  <tr>
+    <td><h3>9PM</h3></td>
+    <td>{% if '9:00PMMonday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Monday", hourof="9:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>		
+    <td>{% if '9:00PMTuesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Tuesday", hourof="9:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '9:00PMWednesday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Wednesday", hourof="9:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '9:00PMThursday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Thursday", hourof="9:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '9:00PMFriday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Friday", hourof="9:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '9:00PMSaturday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Saturday", hourof="9:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+    <td>{% if '9:00PMSunday' in a %}<h5><a href={{url_for('appointment4', dayofweek="Sunday", hourof="9:00PM", studentId=tutorId, selClass=course)}}>Available</a></h5>{%endif%}</td>
+  </tr>
+    
+    </table>
+{% endblock %}

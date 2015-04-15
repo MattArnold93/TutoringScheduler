@@ -55,9 +55,10 @@ CREATE TABLE IF NOT EXISTS times
 	classes varchar (400) NOT NULL,
 	dayofweek varchar (10) NOT NULL,
 	hourof varchar (10) NOT NULL,
+	available INT NOT NULL,
 	INDEX (studentId)
 );
 
-Insert INTO times (studentId, classes, dayofweek, hourof) VALUES (3, "CPSC-110", "Monday", "10:00AM");
-Insert INTO times (studentId, classes, dayofweek, hourof) VALUES (4, "CPSC-110, FREN-331", "Tuesday", "1:00PM");
-Insert INTO times (studentId, classes, dayofweek, hourof) VALUES (4, "CPSC-110, FREN-331", "Monday", "10:00AM");
+Insert INTO times (studentId, classes, dayofweek, hourof) VALUES (3, "CPSC-110", "Monday", "10:00AM", 0);
+Insert INTO times (studentId, classes, dayofweek, hourof) VALUES (4, "CPSC-110, FREN-331", "Tuesday", "1:00PM", 0);
+Insert INTO times (studentId, classes, dayofweek, hourof) VALUES (4, "CPSC-110, FREN-331", "Monday", "10:00AM", 0);

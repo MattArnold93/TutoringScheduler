@@ -73,9 +73,9 @@
   
           {% if queryType=='yes' %}
     <table>
-      <tr><th>First name</th><th>Last name</th><th>Courses</th></tr>
-      {% for results in results %}
-      <tr><td>{{results['firstname']}}</td><td>{{results['lastname']}}</td><td>{{results['classes']}}</td></tr>
+      <tr><th>First name</th><th>Last name</th><th>Courses</th><th>Schedule</th></tr>
+      {% for result in results %}
+      <tr><td>{{result['firstname']}}</td><td>{{result['lastname']}}</td><td>{{result['classes']}}</td><td><a href={{url_for('hours', firstname=result['firstname'], lastname=result['lastname'], subject=a)}}>View</a></td></tr>
       {% endfor %}
     
     </table>
