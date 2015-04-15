@@ -128,7 +128,6 @@ def editTime():
         db.commit()
         error = "sucess"
   return render_template('editTime.html', errors = error)
-  
 
 @app.route('/index')
 def index():
@@ -142,6 +141,13 @@ def index():
   fname = user['firstname']
   lname = user['lastname']
   name = fname + " " + lname
+  adminName = ""
+  adminQuery = "SELECT * FROM users WHERE accountStatus = 1;"
+  cur.execute(adminQuery)
+  row = cur.fetchone()
+  fname = row['firstname']
+  lname = row['lastname']
+  username = fname + " " + lname
   searchQuery = "SELECT class, numId, datenum, apptime, tutorId FROM appointments WHERE studentId='%s'" % (userID)
   cur.execute(searchQuery)
   sresult = cur.fetchall()
@@ -162,7 +168,7 @@ def index():
     session['Status'] = "tutor"
   elif row['accountStatus'] == 3:
     session['Status'] = "student"
-  return render_template('index.html', row=row, Fullname=name, sresults=sresult, tresults=tresult)
+  return render_template('index.html', row=row, Fullname=name, sresults=sresult, tresults=tresult, adminName=username)
 
 @app.route('/logout')
 def logout():
@@ -240,6 +246,114 @@ def createTutor():
         db.commit()
   return render_template('createTutor.html', created=created)
 
+@app.route('/editTutor', methods=['GET', 'POST'])
+def editTutor():
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  created = request.args.get('created')
+  if request.method == 'POST':
+      first = request.form['firstname']
+      last = request.form['lastname']
+      email = request.form['email']
+      query2 = "SELECT * FROM users WHERE email = '%s';" % (email)
+      cur.execute(query2)
+      test = cur.fetchone()
+      if test:
+        if test['accountStatus'] == 1:
+          created = "admin"
+        elif test['accountStatus'] == 2:
+          query = "SELECT classes FROM users WHERE email = '%s';" % (email)
+          cur.execute(query)
+          classes = cur.fetchone()
+          return redirect(url_for('editTutor2', classes=classes['classes'], email=email, first=first,last=last))
+        elif test['accountStatus'] == 3:
+          created = "student"
+      else:
+        created = "no"
+  return render_template('editTutor.html', created=created)
+
+@app.route('/add_courses', methods = ['GET','POST'])
+def AdminDash():
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  exist = ""
+  results = ""
+  if request.method == 'POST':
+    subject = request.form['subject']
+    num = request.form['number']
+    course = subject + "-" + num
+    search = "SELECT class, subject FROM classes WHERE class = '" + course + "';"
+    result = cur.execute(search)
+    if result:
+      exist = "yes"
+    else:
+      exist = "no"
+      query = "INSERT INTO classes (class, subject) VALUES('" + course +"', '" + subject + "');"
+      results = cur.execute(query)
+      db.commit();
+  return render_template('add_courses.html', exist = exist, results = results)
+
+@app.route('/editTutor2', methods=['GET', 'POST'])
+def editTutor2():
+  db = utils.db_connect()
+  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+  classes = request.args.get('classes')
+  tempClass = classes.split(',')
+  first = request.args.get('first')
+  last = request.args.get('last')
+  created=""
+  line = ""
+  email = request.args.get('email')
+  if request.method == "POST":
+    num = request.form['CourseNum']
+    subject = request.form['Subject']
+    if num and subject:
+      course = subject + "-" + num
+      query = "SELECT classes FROM users WHERE email = '" + email + "' AND classes LIKE '%" + course + "%';"
+      cur.execute(query)
+      test = cur.fetchone()
+    else:
+      course = ""
+      test = None
+    delete = request.form['tutorCourse']
+    if test:
+      created="exist"
+    else:
+      if course and not delete:
+        created = "updated"
+        query3 = "UPDATE users SET classes = CONCAT(classes, ',%s') WHERE email = '%s';" % (course, email)
+        cur.execute(query3)
+        db.commit()
+      elif course and delete:
+        created = "both"
+        for data in tempClass:
+          if data != delete:
+            if line == "":
+              line = data
+            else:
+              line = line + "," + data
+        query3 = "UPDATE users SET classes = '%s' WHERE email = '%s';" % (line, email)
+        cur.execute(query3)
+        db.commit()
+        query3 = "UPDATE users SET classes = CONCAT(classes, ',%s') WHERE email = '%s';" % (course, email)
+        cur.execute(query3)
+        db.commit()
+      elif not course and delete:
+        created = "deleted"
+        for data in tempClass:
+          if data != delete:
+            if line == "":
+              line = data
+            else:
+              line = line + "," + data
+        query3 = "UPDATE users SET classes = '%s' WHERE email = '%s';" % (line, email)
+        cur.execute(query3)
+        db.commit()
+      elif not course and not delete:
+        created = "nothing"
+      return redirect(url_for('editTutor', created = created))
+  return render_template('editTutor2.html', classes = tempClass, created=created, first=first, last=last)
+
 @app.route('/delete', methods=['GET', 'POST'])
 def delete():
   db = utils.db_connect()
@@ -315,18 +429,6 @@ def register():
       if not password:
         errorPass = "true"
   return render_template('register.html', errorMail=errorMail, errorFirst=errorFirst, errorLast=errorLast, errorPass=errorPass, error=error)
-
-@app.route('/AdminDash')
-def AdminDash():
-  db = utils.db_connect()
-  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-  
-  stuff = []
-  query = "SELECT * FROM users WHERE level LIKE 'ADMIN'"
-  cur.execute(query)
-  results = cur.fetchall()
-  #for result in results:
-  return "AdminDash"
 
 @app.route('/Schedule')
 def Schedule():
@@ -596,5 +698,5 @@ def search():
   
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=8080, debug=True)
+  app.run(host='0.0.0.0', port=3000, debug=True)
 

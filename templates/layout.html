@@ -35,16 +35,17 @@
           {% if session['Status'] == "admin" %}
           <li><a href="/createTutor">Create a Tutor</a></li>
           <li><a href="/delete">Delete an Account</a></li>
+          <li><a href="/add_courses">Add Courses</a></li>
+          <li><a href="/editTutor">Edit Tutor's Courses</a></li>
           {% endif %}
           {% if session['Status'] == "tutor" or session['Status'] == "student" %}
           <li><a href="/search">Search for Tutor</a></li>
+          <li><a href="/Schedule">Book an Appointment</a></li>
           {% endif %}
-          {% if session['Status'] == "tutor" %}
+          {% if session['Status'] == "tutor %}
           <li><a href="/time">Schedule</a></li>
           {% endif %}
           {% if session['username'] %}
-
-          <li><a href="/Schedule">Book an Appointment</a></li>
           <li><a href="/edit"> Edit Information</a></li>
           <li><a href="/logout">Log Out</a></li>
           {% endif %}

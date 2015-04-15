@@ -1,19 +1,20 @@
 {% extends "layout.html" %}
 
 {% block content %}
+<div class = "articleTitle">
+  <h1>Edit a Tutor </h1>
+  
+  <div class = "articleContent">
+    {% if created == "exist" %}
+    <p>Course already exists in tutor account</p>
+    {% endif %}
+    <p>Add or delete the courses from: {{first}} {{last}}</p>
+    <br>
+            <form method="post">
 
-        <h1>Find a Tutor</h1>
-        <h3>Want help in a course that doesn't have any tutors? Contact {{adminName}} for assistance.</h3>
-<form method = "POST">
-					<table>
-						
-					<tr><td>First Name</td><td><input type="text" id="firstname" name="firstname" /></td></tr>
-					<tr><td>Last Name</td><td><input type="text" id="lastname" name="lastname" /></td></tr>
-					
-					
-					
-					<tr><td>Major of Study</td>
-					<td><select name="Subject">
+            <table>
+					<tr><td>Courses to add: </td>
+					<td>Subject:<select name="Subject">
             <option></option>
 					<option>ACCT</option>
 					<option>AMST</option>
@@ -64,23 +65,17 @@
 					<option>SPAN</option>
 					<option>ARTS</option>
 					<option>THEA</option>
-					</select></td></tr>
-					
-					<tr><td>Course Number</td><td><input type="text" name="CourseNum" id="CourseNum"/></td></tr>
-
-					<tr><td>&nbsp;</td><td><input type="submit" value="Find Tutor" /></td></tr>
+					</select>Course Number: <input type="text" name="CourseNum" id="CourseNum" maxlength=5 placeholder="Enter Course Number"/></td></tr>
+           
+          <tr><td>Courses to delete: </td>
+          <td><select name = "tutorCourse">
+            <option></option>
+          {% for data in classes %}
+          <option>{{data}}</option>
+          {% endfor %}
+          </select>  
+            
+					<tr><td>&nbsp;</td><td><input type="submit" value="Edit Tutor" /></td></tr>
 					</table>
-  
-          {% if queryType=='yes' %}
-    <table>
-      <tr><th>First name</th><th>Last name</th><th>Courses</th></tr>
-      {% for results in results %}
-      <tr><td>{{results['firstname']}}</td><td>{{results['lastname']}}</td><td>{{results['classes']}}</td></tr>
-      {% endfor %}
     
-    </table>
-<br><br>
-  {% endif %}
-					
-					</form>
 {% endblock %}

@@ -1,20 +1,22 @@
 {% extends "layout.html" %}
 
 {% block content %}
-
-        <h1>Find a Tutor</h1>
-        <h3>Want help in a course that doesn't have any tutors? Contact {{adminName}} for assistance.</h3>
-<form method = "POST">
-					<table>
-						
-					<tr><td>First Name</td><td><input type="text" id="firstname" name="firstname" /></td></tr>
-					<tr><td>Last Name</td><td><input type="text" id="lastname" name="lastname" /></td></tr>
-					
-					
-					
-					<tr><td>Major of Study</td>
-					<td><select name="Subject">
-            <option></option>
+<div class = "articleTitle">
+  <h1>Add courses</h1>
+  
+  <div class = "articleContent">
+    {% if exist == "yes" %}
+    <p>Course already exists.</p>
+    <br>
+    <br>
+    {% elif exist == "no" %}
+    <p>Course has been added</p>
+    <br>
+    <br>
+    {% endif %}
+            <form method="post">
+          <p>Course Subject:
+					<select name="subject">
 					<option>ACCT</option>
 					<option>AMST</option>
 					<option>ANTH</option>
@@ -64,23 +66,9 @@
 					<option>SPAN</option>
 					<option>ARTS</option>
 					<option>THEA</option>
-					</select></td></tr>
-					
-					<tr><td>Course Number</td><td><input type="text" name="CourseNum" id="CourseNum"/></td></tr>
-
-					<tr><td>&nbsp;</td><td><input type="submit" value="Find Tutor" /></td></tr>
-					</table>
-  
-          {% if queryType=='yes' %}
-    <table>
-      <tr><th>First name</th><th>Last name</th><th>Courses</th></tr>
-      {% for results in results %}
-      <tr><td>{{results['firstname']}}</td><td>{{results['lastname']}}</td><td>{{results['classes']}}</td></tr>
-      {% endfor %}
+            </select></p>
+                <p>Course Number: <input name="number" type="number" id="number" maxlength="64"/></p><br/>
+                <input type="submit" name="submit" value="Add Course" />
+   
     
-    </table>
-<br><br>
-  {% endif %}
-					
-					</form>
 {% endblock %}
