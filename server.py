@@ -284,8 +284,11 @@ def AdminDash():
     course = subject + "-" + num
     search = "SELECT class, subject FROM classes WHERE class = '" + course + "';"
     result = cur.execute(search)
+    print result
     if result:
       exist = "yes"
+    elif not num:
+      exist = "noNum"
     else:
       exist = "no"
       query = "INSERT INTO classes (class, subject) VALUES('" + course +"', '" + subject + "');"
