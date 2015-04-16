@@ -3,7 +3,7 @@
 {% block content %}
         <h1>Welcome {{Fullname}}</h1>
     {% if session['Status'] == "tutor" %}
-    <p>If you wish to tutor in more courses or remove a course from your account, please contact {{adminName}}.</p>
+    <h3>If you wish to tutor in more courses or remove a course from your account, please contact {{adminName}}.</h3>
     	{% if tresults == 'Nothing' %}
         	<h3>You have no appointments scheduled.</h3>
    		{% else %}

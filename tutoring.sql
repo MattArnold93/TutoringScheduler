@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS users
   INDEX (classes)
 );
 
-INSERT INTO users (firstname, lastname, email, password, accountStatus) VALUES ("Hi", "Testers", "Admin@umw.edu", "Admin", 1);
+INSERT INTO users (firstname, lastname, email, password, accountStatus) VALUES ("Bianca", "Hightower", "Admin@mail.umw.edu", "Admin", 1);
 INSERT INTO users (firstname, lastname, email, password, accountStatus) VALUES ("We Meet", "Again", "Student@mail.umw.edu", "Student", 3);
 INSERT INTO users (firstname, lastname, email, password, accountStatus, classes) VALUES ("Tutor", "Tutor", "Tutor@mail.umw.edu", "tutor", 2, "CPSC-110");
 INSERT INTO users (firstname, lastname, email, password, accountStatus, classes) VALUES ("Toot", "Tutor", "Toot@mail.umw.edu", "tutor", 2, "CPSC-110,FREN-331");
@@ -59,6 +59,6 @@ CREATE TABLE IF NOT EXISTS times
 	INDEX (studentId)
 );
 
-Insert INTO times (studentId, classes, dayofweek, hourof) VALUES (3, "CPSC-110", "Monday", "10:00AM", 0);
-Insert INTO times (studentId, classes, dayofweek, hourof) VALUES (4, "CPSC-110, FREN-331", "Tuesday", "1:00PM", 0);
-Insert INTO times (studentId, classes, dayofweek, hourof) VALUES (4, "CPSC-110, FREN-331", "Monday", "10:00AM", 0);
+Insert INTO times (studentId, classes, dayofweek, hourof, available) VALUES (3, "CPSC-110", "Monday", "10:00AM", 0);
+Insert INTO times (studentId, classes, dayofweek, hourof, available) VALUES (4, "CPSC-110, FREN-331", "Tuesday", "1:00PM", 0);
+Insert INTO times (studentId, classes, dayofweek, hourof, available) VALUES (4, "CPSC-110, FREN-331", "Monday", "10:00AM", 0);

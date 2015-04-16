@@ -8,6 +8,7 @@
     {% endif %}
     <h2>The current appointment is on {{day}} at {{time}} with {{sname}} in {{sub}}.</p></h2>
         <form method="post">
+        	<h2>Edit the Appointment:</h2>
             <h3>Day of the week: <select name="newDay">
 				<option>Monday</option>
 				<option>Tuesday</option>
@@ -31,8 +32,10 @@
 				<option>11</option>
 				<option>12</option>
 			</select></h3>
-			<h3><input type="radio" name="part" value="AM"> AM   
+			<h3><input type="radio" name="part" value="AM" checked> AM   
             <input type="radio" name="part" value="PM"> PM
-            </h3></br></br><input type="submit" name="submit" value="Edit" />
+            </h3><h2>Delete Appointment:</h2>
+            <h3><input type="checkbox" name="delete" value="true"> Delete</h3>
+            </br></br><input type="submit" name="submit" value="Submit" />
 		</form>
 {% endblock %}

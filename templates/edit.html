@@ -10,11 +10,11 @@
     <br>
     <br>
     {% elif errors == "nothing" %}
-    <h3>Nothing has been inputted for Admin.</h3>
+    <h4>Nothing has been inputted for Admin.</h4>
     {% elif errors == "pass" %}
-    <h3>Error. No new password has been added.</h3>
+    <h4>Error. No new password has been added.</h4>
     {% elif errors == "email" %}
-    <h3>New Email is not UMW staff email.</h3>
+    <h4>New Email is not UMW staff email.</h4>
     {% elif errors == "password" %}
     <h3>Your password has been updated.</h3>
     <br>
@@ -31,8 +31,8 @@
                 <h2>Email: <input name="email" type="text" id="email" placeholder="Email" maxlength="96"/></h2>
                 {% endif %}
                 {% if session['Status'] == "admin" or session['Status'] == "student" or session['Status'] == "tutor" %}
-                <h2>Old Password: <input name="oldpassword" type="password" id="oldpassword" maxlength="64"/></h2>
-                <h2>New Password: <input name="password" type="password" id="password" maxlength="64"/></h2><br/>
+                <h2>Old Password: <input name="oldpassword" type="password" id="oldpassword" placeholder="Old Password" maxlength="64"/></h2>
+                <h2>New Password: <input name="password" type="password" id="password" placeholder="New Password" maxlength="64"/></h2><br/>
                 <input type="submit" name="submit" value="Edit" />
                 {% endif %}
    

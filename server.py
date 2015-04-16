@@ -36,19 +36,24 @@ def editAppointment():
   name=fname + " " + lname
   sname=" "
   d= " "
+  DEL = " "
   if request.method == 'POST':
     newTime = request.form['newTime']
     newDay = request.form['newDay']
     part = request.form['part']
-    
-    upTime = newTime + part
-    
-    updatequery = "UPDATE appointments SET apptime = '%s', datenum = '%s' WHERE numId = '%s'" % (upTime, newDay, numId)
-    cur.execute(updatequery)
-    db.commit()
-    d="done"
-    datenum = newDay
-    apptime = upTime
+    if 'delete' in request.form:
+      query2 = "DELETE FROM appointments WHERE numId = '%s';" % (numId)
+      cur.execute(query2)
+      db.commit()
+      return redirect(url_for('index'))
+    else:
+      upTime = newTime + part
+      updatequery = "UPDATE appointments SET apptime = '%s', datenum = '%s' WHERE numId = '%s'" % (upTime, newDay, numId)
+      cur.execute(updatequery)
+      db.commit()
+      d="done"
+      datenum = newDay
+      apptime = upTime
   return render_template('editAppointment.html',numId=numId, day=datenum, time=apptime, sub=subject, sname=name, done=d)
 
 @app.route('/time')
@@ -191,13 +196,8 @@ def edit():
     email = session['username']
     level = session['Status']
    
-    password = unicodedata.normalize('NFKD', password).encode('ascii','ignore')
-    oldP = unicodedata.normalize('NFKD', oldP).encode('ascii','ignore')
-    newPass = unicodedata.normalize('NFKD', newPass).encode('ascii','ignore')
-
     error = "notSame"
     if oldP == password:
-      print "yay"
       if level != "admin":
         if not newPass:
           error = "pass"
@@ -215,12 +215,10 @@ def edit():
         lastname = request.form['lastName']
         newEmail = request.form['email']
         if not firstname and not lastname and not newEmail and not newPass:
-          print "HIIIIIII"
           error = "nothing"
-        elif newEmail and '@umw.edu' not in newEmail:
+        elif newEmail and '@mail.umw.edu' not in newEmail:
           error = "email"
         else:
-          print "NOOOO"
           if not firstname:
             firstname = info['firstname']
           if not lastname:
@@ -306,7 +304,6 @@ def AdminDash():
     course = subject + "-" + num
     search = "SELECT class, subject FROM classes WHERE class = '" + course + "';"
     result = cur.execute(search)
-    print result
     if result:
       exist = "yes"
     elif not num:
@@ -490,7 +487,6 @@ def hours():
   fname=request.args.get('firstname')
   lname=request.args.get('lastname')
   classes=request.args.get('subject')
-  print (classes)
   username=session['username']
   query = "SELECT numId FROM users WHERE email='%s'" % (username)
   cur.execute(query)
@@ -503,7 +499,6 @@ def hours():
   user = cur.fetchone()
   numId = user['numId']
   appQuery = "SELECT dayofweek, hourof FROM times WHERE studentId = '%s' AND available = '0'" % (numId)
-  print (appQuery)
   cur.execute(appQuery)
   apps = cur.fetchall()
   for thing in apps:
@@ -523,94 +518,6 @@ def sched3():
   cur.execute(query)
   tutors = cur.fetchall()
   return render_template('sched3.html', results = tutors, course=selClass)  
-
-
-@app.route('/appoint3', methods=['GET', 'POST'])
-def appointment3():
-  selClass = request.form['class']
-  db = utils.db_connect()
-  cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-  fullDict = []
-  Monday = []
-  Tuesday = []
-  Wednesday = []
-  Thursday = []
-  Friday = []
-  results = []
-
-  query = "SELECT studentId, classes, dayofweek, hourof FROM times" # ORDERBY dayofweek"
-  cur.execute(query)
-  db.commit()
-  usrTimes = cur.fetchall()
-  length = len(usrTimes)
-  daytimeDic = {}
-  for y in range(0, length):
-    dict1 = usrTimes[y]
-    classes = dict1['classes']
-    dayweek = dict1['dayofweek']
-    time = dict1['hourof']
-    if classes == None:
-      continue
-    if selClass in classes:
-      if (len(daytimeDic) == 0):
-        newDict = {dayweek:time}
-        daytimeDic.update(newDict)
-        if dayweek == 'Monday':
-          Monday.append(dict1)
-        elif dayweek == 'Tuesday':
-          Tuesday.append(dict1)
-        elif dayweek == 'Wednesday':
-          Wednesday.append(dict1)
-        elif dayweek == 'Thursday':
-          Thursday.append(dict1)
-        elif dayweek == 'Friday':
-          Friday.append(dict1)
-        fullDict.append(dict1)
-      else:
-        if(dayweek in daytimeDic):
-          keyvalue = daytimeDic.get(dayweek)
-          if(keyvalue == time):
-            continue
-          else:
-            newDict = {dayweek:time}
-            daytimeDic.update(newDict)
-            if dayweek == 'Monday':
-              Monday.append(dict1)
-            elif dayweek == 'Tuesday':
-              Tuesday.append(dict1)
-            elif dayweek == 'Wednesday':
-              Wednesday.append(dict1)
-            elif dayweek == 'Thursday':
-              Thursday.append(dict1)
-            elif dayweek == 'Friday':
-              Friday.append(dict1)
-            fullDict.append(dict1)
-        else:
-          newDict = {dayweek:time}
-          daytimeDic.update(newDict)
-          if dayweek == 'Monday':
-            Monday.append(dict1)
-          elif dayweek == 'Tuesday':
-            Tuesday.append(dict1)
-          elif dayweek == 'Wednesday':
-            Wednesday.append(dict1)
-          elif dayweek == 'Thursday':
-            Thursday.append(dict1)
-          elif dayweek == 'Friday':
-            Friday.append(dict1)
-          fullDict.append(dict1)
-    else:
-      continue
-  results = fullDict
-  fulllength = len(results)
-  monlen = len(Monday)
-  tuelen = len(Tuesday)
-  wedlen = len(Wednesday)
-  thurlen = len(Thursday)
-  frilen = len(Friday)
-  if results != []:
-    return render_template('schedule3.html', selClass=selClass, Monday=Monday, Tuesday=Tuesday, Wednesday=Wednesday, Thursday=Thursday, 
-      Friday=Friday, length=fulllength, monlen=monlen, tuelen=tuelen, wedlen=wedlen, thurlen=thurlen, frilen=frilen)
 
 @app.route('/appoint4', methods=['GET', 'POST'])
 def appointment4():

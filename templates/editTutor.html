@@ -6,23 +6,23 @@
   
   <div class = "articleContent">
     {% if created == "deleted" %}
-    <p>Course has been removed from tutor</p>
+    <h3>Course has been removed from tutor</h3>
     {% elif created == "both" %}
-    <p>Courses have been editted for tutor</p>
+    <h3>Courses have been editted for tutor</h3>
     {% elif created == "no" %}
-    <p>Error! Tutor does not exist!</p>
+    <h4>Error! Tutor does not exist!</h4>
     {% elif created == "student" %}
-    <p>Error! Account belongs to a student!</p>
+    <h4>Error! Account belongs to a student!</h4>
     {% elif created == "updated" %}
-    <p>Course has been added to the tutor.</p>
+    <h3>Course has been added to the tutor.</h3>
     {% elif created == "admin" %}
-    <p>Error! Account is admin!</p>
+    <h4>Error! Account is admin!</h4>
     {% elif created == "nothing" %}
-    <p>Nothing has been added or deleted</p>
+    <h4>Nothing has been added or deleted</h4>
     {% elif created == "exist" %}
-    <p>Course already exists in tutor account</p>
+    <h4>Course already exists in tutor account</h4>
     {% endif %}
-    <p>Please enter the name and email of the tutor you wish to edit:</p>
+    <h2>Please enter the name and email of the tutor you wish to edit:</h2>
     <br>
             <form method="post">
 

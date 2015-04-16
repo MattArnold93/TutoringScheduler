@@ -8,13 +8,13 @@
 	<div id="content">
 		<form method='post' action='/bookapp'>
 
-			<h4>Tutor: <input class='confirm' type="text" name="name" value='{{results['tutorFirst']}} {{results['tutorLast']}}' readOnly="true"></h4>
+			<h2>Tutor: <input class='confirm' type="text" name="name" value='{{results['tutorFirst']}} {{results['tutorLast']}}' readOnly="true"></h2>
 				<br>
-			<h4>Class: <input class='confirm' type="text" name="class" value={{results['class']}} readOnly="true"></h4>
+			<h2>Class: <input class='confirm' type="text" name="class" value={{results['class']}} readOnly="true"></h2>
 				<br>
-			<h4>Day: <input class='confirm' type="text" name="dayofweek" value='{{results['nextorlast']}} {{results['dayofweek']}}' readOnly="true"> </h4>
+			<h2>Day: <input class='confirm' type="text" name="dayofweek" value='{{results['nextorlast']}} {{results['dayofweek']}}' readOnly="true"> </h2>
 				<br>
-			<h4>Time: <input class='confirm' type="text" name="time" value={{results['hourof']}} readOnly="true"></h4>
+			<h2>Time: <input class='confirm' type="text" name="time" value={{results['hourof']}} readOnly="true"></h2>
 
 				<br>
 			<input type='submit' name="confirm" value='Confirm'>
